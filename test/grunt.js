@@ -21,13 +21,21 @@ module.exports = function (grunt) {
         //   'svg': 'actual_files/font.svg'
         // }
 
-        // This is probably best
-        dest: 'actual_files/font', // expands to font.css, font.svg, font.ttf
-        // Assumes all if not specified
+        // // DEV: This is still not the best since we don't have an automagic fall out for CSS format
+        // // This is probably best
+        // dest: 'actual_files/font', // expands to font.css, font.svg, font.ttf
+        // // Assumes all if not specified
+        // fonts: 'svg eot ttf',
+        // // Custom routing of files
+        // router: function (filepath) {
+        //   // Final path = dirname(dest) + returned value
+        // }
+
+        destCss: 'actual_files/font.styl',
+        destFonts: 'actual_files/font.<%= ext %>',
         fonts: 'svg eot ttf',
-        // Custom routing of files
-        router: function (filepath) {
-          // Final path = dirname(dest) + returned value
+        destFonts: function () {
+          // Same behavior as router?
         }
       }
     }
