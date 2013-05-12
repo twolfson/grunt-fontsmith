@@ -78,7 +78,15 @@ module.exports = function (grunt) {
       var map = result.map,
           names = Object.getOwnPropertyNames(map),
           chars = names.map(function (name) {
-            return {name: name, value: map[name].toString(16)};
+            return {
+              name: name,
+              value: map[name].toString(16),
+              // TODO: This will be part of json2fontcss as well?
+              fonts: {
+                // TODO: Work on this ;_;
+                // Should be auto-generated without an explicit list
+              }
+            };
           });
 
       // TODO: Move this into json2fontcss

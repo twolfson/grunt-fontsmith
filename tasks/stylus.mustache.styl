@@ -1,4 +1,7 @@
 {{#items}}
+${{name}}-value: '\{{{value}}}';
+{{! TODO: Need more time to contemplate }}
+${{name}}-font-svg:
 {{! TODO: The intent is not to create CSS classes but to create CSS variables...}}
 .icon-{{name}} {
   font-family: 'icomoon';
@@ -11,7 +14,7 @@
   -webkit-font-smoothing: antialiased;
 }
 .icon-{{name}}:before {
-  content: "\{{{value}}}";
+  content: "";
 }
 {{/items}}
 
