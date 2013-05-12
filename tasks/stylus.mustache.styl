@@ -3,7 +3,8 @@ ${{name}}-value: '\{{{value}}}';
 {{! TODO: Need more time to contemplate }}
 ${{name}}-font-svg:
 {{! TODO: The intent is not to create CSS classes but to create CSS variables...}}
-.icon-{{name}} {
+
+@icon($name) {
   font-family: 'icomoon';
   speak: none;
   font-style: normal;
@@ -12,9 +13,11 @@ ${{name}}-font-svg:
   text-transform: none;
   line-height: 1;
   -webkit-font-smoothing: antialiased;
-}
-.icon-{{name}}:before {
-  content: "";
+
+  &:before {
+    {{! TODO: This won't work. Look at json2css }}
+    content: "$name-value";
+  }
 }
 {{/items}}
 
@@ -31,6 +34,8 @@ ${{name}}-font-svg:
   font-style: normal;
 }
 
+{{!
+  TODO: Think about this one more...
 [data-icon]:before {
   font-family: 'icomoon';
   content: attr(data-icon);
@@ -41,3 +46,4 @@ ${{name}}-font-svg:
   line-height: 1;
   -webkit-font-smoothing: antialiased;
 }
+}}
