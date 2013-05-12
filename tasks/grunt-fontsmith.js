@@ -5,23 +5,28 @@ var fontsmith = require('fontsmith'),
 // TODO: Use observer pattern for stylesheets format inference as with grunt-spritesmith
 // TODO: Formats should be css, styl, less, scss, sass, json
 module.exports = function (grunt) {
+  var braceExpand = grunt.file.glob.minimatch.braceExpand;
+
   function gruntFontsmith() {
     // Localize info
     var data = this.data,
         src = data.src,
         destCss = data.destCss,
-        destFonts = data.destFonts;
+        destFontsRaw = data.destFonts;
 
     // Verify everything exists
-    if (!src || !destCss || !destFonts) {
+    if (!src || !destCss || !destFontsRaw) {
       return grunt.fatal("grunt.font requires a src, destCss, and destFonts property");
     }
 
     // Grab files from src patterns
-    var srcFiles = grunt.file.expand(src);
+    var srcFiles = grunt.file.expand(src),
+        destFonts = braceExpand(destFontsRaw);
+
+    console.log(destFonts);
 
     // Prepare our parameters for fontsmith
-    console.log(srcFiles);
+    // console.log(srcFiles);
 
     // Begin our task being async
     var done = this.async();

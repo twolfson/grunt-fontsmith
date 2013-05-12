@@ -4,7 +4,7 @@ module.exports = function (grunt) {
       'default': {
         src: ['test_files/*.svg'],
         destCss: 'actual_files/font.css',
-        destFonts: 'actual_files/font.{svg,woff,eot}'
+        destFonts: 'actual_files/font.{svg,woff,eot,ttf}'
         // // Alternative formats (1)
         // destFonts: [
         //   'actual_files/font.svg',
