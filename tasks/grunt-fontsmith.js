@@ -37,16 +37,22 @@ module.exports = function (grunt) {
         },
         done = this.async();
 
-    //  Parse through fontsmith
-    // fontsmith(params, function (err, result) {
-    var err = null,
-        result = { fonts:
-           { svg: 'XML',
-             ttf: '\u0000',
-             woff: 'wOFFOTT',
-             eot: ' \u0007',
-             'dev-svg': 'DEV-XML' },
-          map: { building_block: 57345, eye: 57344, moon: 57346 } };
+    // DEV: Override fontsmith
+    fontsmith = function (params, cb) {
+      cb(null, {
+        fonts: {
+          svg: 'XML',
+          ttf: '\u0000',
+          woff: 'wOFFOTT',
+          eot: ' \u0007',
+          'dev-svg': 'DEV-XML'
+        },
+        map: { building_block: 57345, eye: 57344, moon: 57346 }
+      });
+    };
+
+    // Parse through fontsmith
+    fontsmith(params, function (err, result) {
       // If there was an error, callback with it
       // TODO: Is this the proper behavior for grunt? I forget =(
       if (err) {
@@ -62,7 +68,7 @@ module.exports = function (grunt) {
       // TODO: If there were any errors, display them
       // Callback
       done();
-    // });
+    });
   }
 
   // Register grunt fontsmith as font task
