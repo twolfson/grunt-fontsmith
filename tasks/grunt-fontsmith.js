@@ -1,6 +1,7 @@
 // Load in fontsmith and modules
 var fontsmith = require('fontsmith'),
-    fs = require('fs');
+    fs = require('fs'),
+    path = require('path');
 
 // TODO: Use observer pattern for stylesheets format inference as with grunt-spritesmith
 // TODO: Formats should be css, styl, less, scss, sass, json
@@ -19,26 +20,41 @@ module.exports = function (grunt) {
       return grunt.fatal("grunt.font requires a src, destCss, and destFonts property");
     }
 
-    // Grab files from src patterns
+    // Normalize and collect info from file patterns
+    // TODO: Handle arrays of font patterns
+    // TOOD: Handle object mappings for fonts
+    // TODO: Technically, the object format is the de-facto format
     var srcFiles = grunt.file.expand(src),
-        destFonts = braceExpand(destFontsRaw);
-
-    console.log(destFonts);
+        destFonts = braceExpand(destFontsRaw),
+        destFontFormats = destFonts.map(function (filepath) {
+          return path.extname(filepath).slice(1);
+        });
 
     // Prepare our parameters for fontsmith
-    // console.log(srcFiles);
+    var params = {
+          'src': srcFiles,
+          'fonts': destFontFormats
+        },
+        done = this.async();
 
-    // Begin our task being async
-    var done = this.async();
+    //  Parse through fontsmith
+    fontsmith(params, function (err, result) {
+      // If there was an error, callback with it
+      // TODO: Is this the proper behavior for grunt? I forget =(
+      if (err) {
+        return done(err);
+      }
 
-    // TODO: Parse through fontsmith
+      // Generate directories
+      console.log(result);
 
-      // TODO: Generate directories
       // TODO: Write out fonts via binary encoding
       // TODO: Generate CSS
       // TODO: Allow for other CSS engines
       // TODO: If there were any errors, display them
-      // TODO: Callback
+      // Callback
+      done();
+    });
   }
 
   // Register grunt fontsmith as font task

@@ -10,6 +10,9 @@ module.exports = {
     this.task = 'default';
   },
   'processed via grunt-fontsmith': function (done) {
+    // Bump the timeout for fontsmith
+    this.timeout(10000);
+
     // Relocate to test directory
     process.chdir(__dirname);
 
