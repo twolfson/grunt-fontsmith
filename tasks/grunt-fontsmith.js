@@ -1,3 +1,7 @@
+// Load in fontsmith and modules
+var fontsmith = require('fontsmith'),
+    fs = require('fs');
+
 // TODO: Use observer pattern for stylesheets format inference as with grunt-spritesmith
 // TODO: Formats should be css, styl, less, scss, sass, json
 module.exports = function (grunt) {
