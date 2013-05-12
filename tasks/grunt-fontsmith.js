@@ -6,9 +6,36 @@ var fontsmith = require('fontsmith'),
 // TODO: Formats should be css, styl, less, scss, sass, json
 module.exports = function (grunt) {
   function gruntFontsmith() {
+    // Localize info
+    var data = this.data,
+        src = data.src,
+        destCss = data.destCss,
+        destFonts = data.destFonts;
 
+    // Verify everything exists
+    if (!src || !destCss || !destFonts) {
+      return grunt.fatal("grunt.font requires a src, destCss, and destFonts property");
+    }
+
+    // Grab files from src patterns
+    var srcFiles = grunt.file.expand(src);
+
+    // Prepare our parameters for fontsmith
+    console.log(srcFiles);
+
+    // Begin our task being async
+    var done = this.async();
+
+    // TODO: Parse through fontsmith
+
+      // TODO: Generate directories
+      // TODO: Write out fonts via binary encoding
+      // TODO: Generate CSS
+      // TODO: Allow for other CSS engines
+      // TODO: If there were any errors, display them
+      // TODO: Callback
   }
 
   // Register grunt fontsmith as font task
-  grunt.registerTask('font', 'Create fonts and CSS variables from SVGs', gruntFontsmith);
+  grunt.registerMultiTask('font', 'Create fonts and CSS variables from SVGs', gruntFontsmith);
 };

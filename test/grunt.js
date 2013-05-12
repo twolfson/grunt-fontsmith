@@ -22,6 +22,6 @@ module.exports = function (grunt) {
     }
   });
 
+  // Load in grunt-fontsmith
   grunt.loadTasks('../tasks');
-  grunt.registerTask('default', 'font');
 };

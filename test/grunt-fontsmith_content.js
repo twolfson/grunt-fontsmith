@@ -1,5 +1,10 @@
+// Load in modules
 var exec = require('child_process').exec;
 
+// Clean up actual_files/
+try { fs.unlinkSync('actual_files/'); } catch (e) {}
+
+// Expose our test commands
 module.exports = {
   'A set of SVGs': function () {
     this.task = 'default';
@@ -10,7 +15,7 @@ module.exports = {
 
     // Execute the cmd and task combination
     var that = this;
-    exec('grunt ' + this.task, function (err, stdout, stderr) {
+    exec('grunt font:' + this.task, function (err, stdout, stderr) {
       // Fallback error
       if (!err) {
         err = new Error(stderr);
