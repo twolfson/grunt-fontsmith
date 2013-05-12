@@ -37,7 +37,7 @@ module.exports = function (grunt) {
         },
         done = this.async();
 
-    // DEV: Override fontsmith
+    // DEV: Override fontsmith for faster iterations
     fontsmith = function (params, cb) {
       cb(null, {
         fonts: {
@@ -60,11 +60,42 @@ module.exports = function (grunt) {
       }
 
       // Generate directories
-      console.log(result);
+      var cssDir = path.dirname(destCss),
+          fontDirs = destFonts.map(path.dirname),
+          dirs = [cssDir].concat(fontDirs);
+      dirs.forEach(grunt.file.mkdir);
 
-      // TODO: Write out fonts via binary encoding
-      // TODO: Generate CSS
+      // Write out fonts via binary encoding
+      var fonts = result.fonts;
+      destFonts.forEach(function (filepath) {
+        // TODO: Instead of DRYing with a function, move to the damn de-facto format
+        var fontFormat = path.extname(filepath).slice(1),
+            font = fonts[fontFormat];
+        fs.writeFileSync(filepath, font, 'binary');
+      });
+
+      // Generate CSS
+      var map = result.map,
+          names = Object.getOwnPropertyNames(map),
+          chars = names.map(function (name) {
+            return {name: name, value: map[name].toString(16)};
+          });
+
+      // TODO: Move this into json2fontcss
+      var mustache = require('mustache'),
+          tmpl = fs.readFileSync(__dirname + '/css.mustache.css', 'utf8'),
+          json2fontcss = function (params) {
+            return mustache.render(tmpl, params);
+          },
+          css = json2fontcss({items: chars});
+
+      console.log(css);
+
+      // TODO: We need to support also writing out CSS to JSON (visions of requiring JSON and using it in HTML)
+      // Write out CSS
+
       // TODO: Allow for other CSS engines
+
       // TODO: If there were any errors, display them
       // Callback
       done();

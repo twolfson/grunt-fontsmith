@@ -3,6 +3,7 @@ module.exports = function (grunt) {
     font: {
       'default': {
         src: ['test_files/*.svg'],
+        // TODO: Allow JSON output as well
         destCss: 'actual_files/font.css',
         destFonts: 'actual_files/font.{svg,woff,eot,ttf}'
         // // Alternative formats (1)
