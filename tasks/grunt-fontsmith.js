@@ -58,20 +58,15 @@ module.exports = function (grunt) {
 
     // DEV: Override fontsmith for faster iterations
     fontsmith = function (params, cb) {
-      cb(null, {
-        fonts: {
-          svg: 'XML',
-          ttf: '\u0000',
-          woff: 'wOFFOTT',
-          eot: ' \u0007',
-          'dev-svg': 'DEV-XML'
-        },
-        map: { building_block: 57345, eye: 57344, moon: 57346 }
-      });
+      var resJson = fs.readFileSync('tmp.json', 'binary');
+      cb(null, JSON.parse(resJson));
     };
 
     // Parse through fontsmith
     fontsmith(params, function (err, result) {
+      // DEV: Write out JSON response to file
+      // fs.writeFileSync('tmp.json', JSON.stringify(result), 'binary');
+
       // If there was an error, callback with it
       // TODO: Is this the proper behavior for grunt? I forget =(
       if (err) {
