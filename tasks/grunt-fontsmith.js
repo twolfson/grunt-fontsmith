@@ -91,6 +91,7 @@ module.exports = function (grunt) {
       });
 
       // Generate relative font paths
+      // TODO: Need to allow for custom routing business (although, that is extensibility vs compoundability)
       var relFonts = {};
       destFontFormats.forEach(function (fontFormat) {
         var filepath = destFonts[fontFormat],
