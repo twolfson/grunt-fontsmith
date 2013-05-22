@@ -53,6 +53,7 @@ module.exports = {
     this.fontFiles.forEach(function (filename) {
       var expectedContent = fs.readFileSync(expectedDir + filename, 'binary'),
           actualContent = fs.readFileSync(actualDir + filename, 'binary');
+      // TODO: Instead of diffing fonts, use them via phantomjs or similar for a proper verification of functionality
           // bitDiff = _s.levenshtein(actualContent, expectedContent),
           // maxPassing = 50,
           // isPassing = bitDiff < maxPassing;
