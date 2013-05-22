@@ -37,10 +37,10 @@ module.exports = function (grunt) {
       // Iterate over the fonts
       destFontStrs.forEach(function (destFontStr) {
         // Break down any brace exapansions
-        var destFonts = braceExpand(destFontStr);
+        var destFontPaths = braceExpand(destFontStr);
 
         // Iterate over the fonts
-        destFonts.forEach(function (filepath) {
+        destFontPaths.forEach(function (filepath) {
           // Grab the extension and save it under its key
           var ext = path.extname(filepath).slice(1);
           destFonts[ext] = filepath;
@@ -106,6 +106,7 @@ module.exports = function (grunt) {
           });
 
       // TODO: Move this into json2fontcss
+      // TODO: Allow for other CSS engines
       var mustache = require('mustache'),
           tmpl = fs.readFileSync(__dirname + '/stylus.mustache.styl', 'utf8'),
           json2fontcss = function (params) {
@@ -113,13 +114,10 @@ module.exports = function (grunt) {
           },
           css = json2fontcss({items: chars, fonts: destFonts});
 
-      console.log(css);
-
       // TODO: We need to support also writing out CSS to JSON (visions of requiring JSON and using it in HTML)
-      // TODO: Don't forget to create the directory (pretty sure we will be using grunt.file.write though)
+      // TODO: This means writing out multiple CSS destinations (and interpretting CSS multiple times)
       // Write out CSS
-
-      // TODO: Allow for other CSS engines
+      grunt.file.write(destCss, css, 'utf8');
 
       // TODO: If there were any errors, display them
       // Callback
