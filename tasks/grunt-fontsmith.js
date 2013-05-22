@@ -21,17 +21,36 @@ module.exports = function (grunt) {
     }
 
     // Normalize and collect info from file patterns
-    // TODO: Handle arrays of font patterns
-    // TOOD: Handle object mappings for fonts
-    // TODO: Technically, the object format is the de-facto format
     var srcFiles = grunt.file.expand(src),
-        destFonts = braceExpand(destFontsRaw),
-        destFontFormats = destFonts.map(function (filepath) {
-          return path.extname(filepath).slice(1);
+        destFontStrs = destFontsRaw,
+        destFonts = destFontsRaw;
+
+    // If the font format is a string, encapsulate it as an array
+    if (typeof destFontsRaw === 'string') {
+      destFontStrs = [destFontsRaw];
+    }
+
+    // If the font format is an array, collect them into an object
+    if (Array.isArray(destFontStrs)) {
+      destFonts = {};
+
+      // Iterate over the fonts
+      destFontStrs.forEach(function (destFontStr) {
+        // Break down any brace exapansions
+        var destFonts = braceExpand(destFontStr);
+
+        // Iterate over the fonts
+        destFonts.forEach(function (filepath) {
+          // Grab the extension and save it under its key
+          var ext = path.extname(filepath).slice(1);
+          destFonts[ext] = filepath;
         });
+      });
+    }
 
     // Prepare our parameters for fontsmith
-    var params = {
+    var destFontFormats = Object.getOwnPropertyNames(destFonts),
+        params = {
           'src': srcFiles,
           'fonts': destFontFormats
         },
@@ -59,18 +78,19 @@ module.exports = function (grunt) {
         return done(err);
       }
 
-      // Generate directories
-      var cssDir = path.dirname(destCss),
-          fontDirs = destFonts.map(path.dirname),
-          dirs = [cssDir].concat(fontDirs);
-      dirs.forEach(grunt.file.mkdir);
-
       // Write out fonts via binary encoding
-      var fonts = result.fonts;
-      destFonts.forEach(function (filepath) {
-        // TODO: Instead of DRYing with a function, move to the damn de-facto format
-        var fontFormat = path.extname(filepath).slice(1),
+      var cssDir = path.dirname(destCss),
+          fonts = result.fonts;
+      destFontFormats.forEach(function (fontFormat) {
+        // Localize the font destinations
+        var filepath = destFonts[fontFormat],
             font = fonts[fontFormat];
+
+        // Generate font directory
+        var filedir = path.dirname(filepath);
+        grunt.file.mkdir(filedir);
+
+        // Write out the font
         fs.writeFileSync(filepath, font, 'binary');
       });
 
@@ -81,25 +101,22 @@ module.exports = function (grunt) {
             return {
               name: name,
               value: map[name].toString(16),
-              // TODO: This will be part of json2fontcss as well?
-              fonts: {
-                // TODO: Work on this ;_;
-                // Should be auto-generated without an explicit list
-              }
+              fonts: destFonts
             };
           });
 
       // TODO: Move this into json2fontcss
       var mustache = require('mustache'),
-          tmpl = fs.readFileSync(__dirname + '/css.mustache.css', 'utf8'),
+          tmpl = fs.readFileSync(__dirname + '/stylus.mustache.styl', 'utf8'),
           json2fontcss = function (params) {
             return mustache.render(tmpl, params);
           },
-          css = json2fontcss({items: chars});
+          css = json2fontcss({items: chars, fonts: destFonts});
 
       console.log(css);
 
       // TODO: We need to support also writing out CSS to JSON (visions of requiring JSON and using it in HTML)
+      // TODO: Don't forget to create the directory (pretty sure we will be using grunt.file.write though)
       // Write out CSS
 
       // TODO: Allow for other CSS engines
