@@ -1,7 +1,8 @@
 // Load in fontsmith and modules
 var fontsmith = require('fontsmith'),
     fs = require('fs'),
-    path = require('path');
+    path = require('path'),
+    url = require('url2');
 
 // TODO: Use observer pattern for stylesheets format inference as with grunt-spritesmith
 // TODO: Formats should be css, styl, less, scss, sass, json
@@ -56,11 +57,11 @@ module.exports = function (grunt) {
         },
         done = this.async();
 
-    // DEV: Override fontsmith for faster iterations
-    fontsmith = function (params, cb) {
-      var resJson = fs.readFileSync('tmp.json', 'binary');
-      cb(null, JSON.parse(resJson));
-    };
+    // // DEV: Override fontsmith for faster iterations
+    // fontsmith = function (params, cb) {
+    //   var resJson = fs.readFileSync('tmp.json', 'binary');
+    //   cb(null, JSON.parse(resJson));
+    // };
 
     // Parse through fontsmith
     fontsmith(params, function (err, result) {
@@ -89,6 +90,14 @@ module.exports = function (grunt) {
         fs.writeFileSync(filepath, font, 'binary');
       });
 
+      // Generate relative font paths
+      var relFonts = {};
+      destFontFormats.forEach(function (fontFormat) {
+        var filepath = destFonts[fontFormat],
+            relpath = url.relative(destCss, filepath);
+        relFonts[fontFormat] = relpath;
+      });
+
       // Generate CSS
       var map = result.map,
           names = Object.getOwnPropertyNames(map),
@@ -96,7 +105,7 @@ module.exports = function (grunt) {
             return {
               name: name,
               value: map[name].toString(16),
-              fonts: destFonts
+              fonts: relFonts
             };
           });
 

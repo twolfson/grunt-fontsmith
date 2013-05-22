@@ -4,7 +4,7 @@
 {{/items}}
 
 .icon(@name) {
-  font-family: 'font-face';
+  font-family: 'icon-font';
   speak: none;
   font-style: normal;
   font-weight: normal;
@@ -15,10 +15,13 @@
 
   &:before {
     {{! DEV: We perform a slice due to a trailing brace from string coercion of arrays }}
-    content: ~`"@{name}".split(', ')[0].slice(0, -1)`;
+    {{! content: ~`"@{name}".split(', ')[0].slice(0, -1)`; }}
+    content: @name;
   }
 }
 
+{{! TODO: We can allow font-family to be an input }}
+{{! Then, use .icon with the second parameter fallback of font-family }}
 @font-face {
   font-family: 'icon-font';
   {{#fonts.eot}}
