@@ -103,11 +103,14 @@ module.exports = function (grunt) {
       // TODO: Move this into json2fontcss
       // TODO: Allow for other CSS engines
       var mustache = require('mustache'),
-          tmpl = fs.readFileSync(__dirname + '/stylus.mustache.styl', 'utf8'),
+          // tmpl = fs.readFileSync(__dirname + '/stylus.mustache.styl', 'utf8'),
+          tmpl = fs.readFileSync(__dirname + '/less.mustache.less', 'utf8'),
           json2fontcss = function (params) {
             return mustache.render(tmpl, params);
           },
           css = json2fontcss({items: chars, fonts: destFonts});
+
+      console.log(css);
 
       // TODO: We need to support also writing out CSS to JSON (visions of requiring JSON and using it in HTML)
       // TODO: This means writing out multiple CSS destinations (and interpretting CSS multiple times)

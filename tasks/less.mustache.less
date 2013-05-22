@@ -1,0 +1,33 @@
+{{#items}}
+@{{name}}-value: '\{{{value}}}';
+@{{name}}: '\{{{value}}}';
+{{/items}}
+
+.icon(@name) {
+  font-family: 'font-face';
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+
+  &:before {
+    {{! DEV: We perform a slice due to a trailing brace from string coercion of arrays }}
+    content: ~`"@{name}".split(', ')[0].slice(0, -1)`;
+  }
+}
+
+@font-face {
+  font-family: 'icon-font';
+  {{#fonts.eot}}
+  src:url('{{{fonts.eot}}}');
+  {{/fonts.eot}}
+  src:{{#fonts.eot}}url('{{{fonts.eot}}}?#iefix') format('embedded-opentype'),
+    {{/fonts.eot}}{{#fonts.woff}}url('{{{fonts.woff}}}') format('woff'),
+    {{/fonts.woff}}{{#fonts.ttf}}url('{{{fonts.ttf}}}') format('truetype'),
+    {{/fonts.ttf}}{{#fonts.svg}}url('{{{fonts.svg}}}#icomoon') format('svg'){{/fonts.svg}};
+  font-weight: normal;
+  font-style: normal;
+}
