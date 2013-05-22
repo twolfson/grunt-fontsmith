@@ -18,6 +18,8 @@ ${{name}}: '\{{{value}}}';
   }
 }
 
+{{! On a second thought, this is useless since it will be overwritten immediately via the cascade }}
+{{! TODO: If this fails (not sure about font-face in mixin), remove it }}
 @font($name='icon-font') {
   @font-face {
     font-family: $name;
