@@ -62,11 +62,11 @@ module.exports = function (grunt) {
         },
         done = this.async();
 
-    // DEV: Override fontsmith for faster iterations
-    fontsmith = function (params, cb) {
-      var resJson = fs.readFileSync('tmp.json', 'binary');
-      cb(null, JSON.parse(resJson));
-    };
+    // // DEV: Override fontsmith for faster iterations
+    // fontsmith = function (params, cb) {
+    //   var resJson = fs.readFileSync('tmp.json', 'binary');
+    //   cb(null, JSON.parse(resJson));
+    // };
 
     // Parse through fontsmith
     fontsmith(params, function (err, result) {
