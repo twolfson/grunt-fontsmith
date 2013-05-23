@@ -32,7 +32,7 @@ module.exports = function (grunt) {
         //   'eot': 'actual_files/more.like.eof'
         // }
 
-        // // Optional: Custom routing of font filepaths for CSS intricacies
+        // // Optional: Custom routing of font filepaths for CSS
         // cssRouter: function (fontpath) {
         //   return fontpath;
         // }
