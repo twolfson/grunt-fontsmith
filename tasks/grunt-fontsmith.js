@@ -10,8 +10,10 @@ module.exports = function (grunt) {
   var braceExpand = grunt.file.glob.minimatch.braceExpand;
 
   function gruntFontsmith() {
+    console.log(this);
     // Localize info
-    var data = this.data,
+    var target = this.target,
+        data = this.data,
         src = data.src,
         destCss = data.destCss,
         destFontsRaw = data.destFonts;
@@ -57,11 +59,11 @@ module.exports = function (grunt) {
         },
         done = this.async();
 
-    // // DEV: Override fontsmith for faster iterations
-    // fontsmith = function (params, cb) {
-    //   var resJson = fs.readFileSync('tmp.json', 'binary');
-    //   cb(null, JSON.parse(resJson));
-    // };
+    // DEV: Override fontsmith for faster iterations
+    fontsmith = function (params, cb) {
+      var resJson = fs.readFileSync('tmp.json', 'binary');
+      cb(null, JSON.parse(resJson));
+    };
 
     // Parse through fontsmith
     fontsmith(params, function (err, result) {
@@ -102,6 +104,7 @@ module.exports = function (grunt) {
       // Generate CSS
       var map = result.map,
           names = Object.getOwnPropertyNames(map),
+          fontFamily = data.fontFamily || 'fontsmith-' + target,
           chars = names.map(function (name) {
             return {
               name: name,
@@ -118,7 +121,11 @@ module.exports = function (grunt) {
           json2fontcss = function (params) {
             return mustache.render(tmpl, params);
           },
-          css = json2fontcss({items: chars, fonts: destFonts});
+          css = json2fontcss({
+            items: chars,
+            fonts: destFonts,
+            fontFamily: JSON.stringify(fontFamily)
+          });
 
       console.log(css);
 

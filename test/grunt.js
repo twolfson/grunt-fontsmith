@@ -21,14 +21,14 @@ module.exports = function (grunt) {
         // }
 
         // TODO: Custom routing of font filepaths for CSS intricacies
-        // cssPathRouter: function (fontpath) {
+        // cssRouter: function (fontpath) {
         //   return fontpath;
         // }
 
         // TODO: Allow custom naming of font families for multi support
         // TODO: It would be smart to name it after the task ;)
         // TODO: Don't forget to escape this (JSON.stringify)
-        // fontname: 'my-icon-font'
+        // fontFamily: 'my-icon-font'
       }
     }
   });

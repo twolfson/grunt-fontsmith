@@ -1,10 +1,11 @@
 {{#items}}
-@{{name}}-value: '\{{{value}}}';
-@{{name}}: '\{{{value}}}';
+@{{name}}-font-family: {{{fontFamily}}};
+@{{name}}-value: "\{{{value}}}";
+@{{name}}: {{{fontFamily}}} "\{{{value}}}";
 {{/items}}
 
-.icon(@name) {
-  font-family: 'icon-font';
+.icon(@char) {
+  font-family: ~`"@{char}".split(", ")[0]`;
   speak: none;
   font-style: normal;
   font-weight: normal;
@@ -15,22 +16,21 @@
 
   &:before {
     {{! DEV: We perform a slice due to a trailing brace from string coercion of arrays }}
-    {{! content: ~`"@{name}".split(', ')[0].slice(0, -1)`; }}
-    content: @name;
+    content: ~`"@{char}".split(", ")[1].slice(0, -1)`;
   }
 }
 
 {{! TODO: We can allow font-family to be an input }}
 {{! Then, use .icon with the second parameter fallback of font-family }}
 @font-face {
-  font-family: 'icon-font';
+  font-family: {{{fontFamily}}};
   {{#fonts.eot}}
-  src:url('{{{fonts.eot}}}');
+  src:url("{{{fonts.eot}}}");
   {{/fonts.eot}}
-  src:{{#fonts.eot}}url('{{{fonts.eot}}}?#iefix') format('embedded-opentype'),
-    {{/fonts.eot}}{{#fonts.woff}}url('{{{fonts.woff}}}') format('woff'),
-    {{/fonts.woff}}{{#fonts.ttf}}url('{{{fonts.ttf}}}') format('truetype'),
-    {{/fonts.ttf}}{{#fonts.svg}}url('{{{fonts.svg}}}#icomoon') format('svg'){{/fonts.svg}};
+  src:{{#fonts.eot}}url("{{{fonts.eot}}}?#iefix") format("embedded-opentype"),
+    {{/fonts.eot}}{{#fonts.woff}}url("{{{fonts.woff}}}") format("woff"),
+    {{/fonts.woff}}{{#fonts.ttf}}url("{{{fonts.ttf}}}") format("truetype"),
+    {{/fonts.ttf}}{{#fonts.svg}}url("{{{fonts.svg}}}#icomoon") format("svg"){{/fonts.svg}};
   font-weight: normal;
   font-style: normal;
 }
