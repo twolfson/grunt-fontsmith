@@ -33,7 +33,7 @@ module.exports = {
 
       // Save results for later
       that.stdout = stdout;
-      console.log(stdout);
+      // console.log(stdout);
 
       // Callback
       done(err);
