@@ -111,8 +111,7 @@ module.exports = function (grunt) {
           chars = names.map(function (name) {
             return {
               name: name,
-              value: map[name].toString(16),
-              fonts: relFonts
+              value: map[name].toString(16)
             };
           });
 
@@ -125,7 +124,7 @@ module.exports = function (grunt) {
             return mustache.render(tmpl, params);
           },
           css = json2fontcss({
-            items: chars,
+            chars: chars,
             fonts: destFonts,
             fontFamily: JSON.stringify(fontFamily),
             format: 'less',
