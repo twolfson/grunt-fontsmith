@@ -1,7 +1,8 @@
 // Load in fontsmith and modules
-var fontsmith = require('fontsmith'),
-    fs = require('fs'),
+var fs = require('fs'),
     path = require('path'),
+    fontsmith = require('fontsmith'),
+    json2fontcss = require('json2fontcss'),
     url = require('url2');
 
 // TODO: Use observer pattern for stylesheets format inference
@@ -115,24 +116,16 @@ module.exports = function (grunt) {
             };
           });
 
-      // TODO: Move this into json2fontcss
-      // TODO: Allow for other CSS engines
-      var mustache = require('mustache'),
-          // tmpl = fs.readFileSync(__dirname + '/stylus.mustache.styl', 'utf8'),
-          tmpl = fs.readFileSync(__dirname + '/less.mustache.less', 'utf8'),
-          json2fontcss = function (params) {
-            return mustache.render(tmpl, params);
-          },
-          css = json2fontcss({
+      // TODO: We need to support also writing out CSS to JSON (visions of requiring JSON and using it in HTML)
+      // TODO: This means writing out multiple CSS destinations (and interpretting CSS multiple times)
+      var css = json2fontcss({
             chars: chars,
             fonts: destFonts,
             fontFamily: JSON.stringify(fontFamily),
-            format: 'less',
+            template: 'less',
             options: data.cssOptions || {}
           });
 
-      // TODO: We need to support also writing out CSS to JSON (visions of requiring JSON and using it in HTML)
-      // TODO: This means writing out multiple CSS destinations (and interpretting CSS multiple times)
       // Write out CSS
       grunt.file.write(destCss, css, 'utf8');
 
