@@ -4,8 +4,11 @@ var fontsmith = require('fontsmith'),
     path = require('path'),
     url = require('url2');
 
-// TODO: Use observer pattern for stylesheets format inference as with grunt-spritesmith
+// TODO: Use observer pattern for stylesheets format inference
+// (i.e. .addCssFormat, .addFontFormat)
 // TODO: Formats should be css, styl, less, scss, sass, json
+// and svg, dev-svg, woff, eot, ttf
+// TODO: This should be for extension adjustment. If not found, fallback to extension itself.
 module.exports = function (grunt) {
   var braceExpand = grunt.file.glob.minimatch.braceExpand;
 
@@ -128,8 +131,6 @@ module.exports = function (grunt) {
             format: 'less',
             options: data.cssOptions || {}
           });
-
-      console.log(css);
 
       // TODO: We need to support also writing out CSS to JSON (visions of requiring JSON and using it in HTML)
       // TODO: This means writing out multiple CSS destinations (and interpretting CSS multiple times)
