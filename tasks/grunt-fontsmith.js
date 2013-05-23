@@ -124,7 +124,8 @@ module.exports = function (grunt) {
           css = json2fontcss({
             items: chars,
             fonts: destFonts,
-            fontFamily: JSON.stringify(fontFamily)
+            fontFamily: JSON.stringify(fontFamily),
+            format: 'less'
           });
 
       console.log(css);
@@ -135,6 +136,7 @@ module.exports = function (grunt) {
       grunt.file.write(destCss, css, 'utf8');
 
       // TODO: If there were any errors, display them
+      // TODO: Notify the user of the created files
       // Callback
       done();
     });
