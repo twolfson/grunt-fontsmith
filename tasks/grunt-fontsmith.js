@@ -125,7 +125,8 @@ module.exports = function (grunt) {
             items: chars,
             fonts: destFonts,
             fontFamily: JSON.stringify(fontFamily),
-            format: 'less'
+            format: 'less',
+            options: data.cssOptions || {}
           });
 
       console.log(css);

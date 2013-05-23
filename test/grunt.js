@@ -27,6 +27,9 @@ module.exports = function (grunt) {
 
         // // Optional: Custom naming of font families for multi-task support
         // fontFamily: 'my-icon-font'
+
+        // // Optional: CSS options for json2fontcss
+        // cssOptions: {}
       }
     }
   });
