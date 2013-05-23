@@ -13,9 +13,8 @@ try { fs.unlinkSync(actualDir); } catch (e) {}
 module.exports = {
   'A set of SVGs': function () {
     this.task = 'default';
-    this.cssFiles = ['font.css'];
-    // this.fontFiles = ['font.eot', 'font.svg', 'font.ttf', 'font.woff'];
-    this.fontFiles = ['font.svg'];
+    this.cssFiles = ['font.styl'];
+    this.fontFiles = ['font.eot', 'font.svg', 'font.ttf', 'font.woff'];
   },
   'processed via grunt-fontsmith': function (done) {
     // Bump the timeout for fontsmith

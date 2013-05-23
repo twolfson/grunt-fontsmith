@@ -3,16 +3,28 @@ module.exports = function (grunt) {
     font: {
       'default': {
         src: ['test_files/*.svg'],
-        // TODO: Allow JSON output as well
-        destCss: 'actual_files/font.css',
+        destCss: 'actual_files/font.styl',
         destFonts: 'actual_files/font.{svg,woff,eot,ttf}'
+        // // Multiple CSS output support
+        // destCss: 'actual_files/font.{styl,json}',
+
         // // Alternative formats (1)
+        // destCss:[
+        //   'actual_files/font.styl',
+        //   'actual_files/font.json'
+        // ]
         // destFonts: [
         //   'actual_files/font.svg',
         //   'actual_files/font.woff',
         //   'actual_files/font.eot'
         // ]
+
         // // Alternative formats (2)
+        // destFonts: {
+        //   // Override specific engines
+        //   'json': 'actual_files/font.less',
+        //   'styl': 'actual_files/font.json'
+        // }
         // destFonts: {
         //   // Override specific engines
         //   'dev-svg': 'actual_files/font.svg',
