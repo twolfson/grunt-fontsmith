@@ -10,13 +10,12 @@ module.exports = function (grunt) {
   var braceExpand = grunt.file.glob.minimatch.braceExpand;
 
   function gruntFontsmith() {
-    console.log(this);
     // Localize info
-    var target = this.target,
-        data = this.data,
+    var data = this.data,
         src = data.src,
         destCss = data.destCss,
-        destFontsRaw = data.destFonts;
+        destFontsRaw = data.destFonts,
+        that = this;
 
     // Verify everything exists
     if (!src || !destCss || !destFontsRaw) {
@@ -71,8 +70,8 @@ module.exports = function (grunt) {
       // fs.writeFileSync('tmp.json', JSON.stringify(result), 'binary');
 
       // If there was an error, callback with it
-      // TODO: Is this the proper behavior for grunt? I forget =(
       if (err) {
+        grunt.fatal(err);
         return done(err);
       }
 
@@ -104,6 +103,7 @@ module.exports = function (grunt) {
       // Generate CSS
       var map = result.map,
           names = Object.getOwnPropertyNames(map),
+          target = that.target,
           fontFamily = data.fontFamily || 'fontsmith-' + target,
           chars = names.map(function (name) {
             return {
@@ -136,8 +136,19 @@ module.exports = function (grunt) {
       // Write out CSS
       grunt.file.write(destCss, css, 'utf8');
 
-      // TODO: If there were any errors, display them
-      // TODO: Notify the user of the created files
+      // If there were any errors, display them
+      if (that.errorCount) {
+        return done(false);
+      }
+
+      // Notify the user of the created files
+      // TODO: Handle multiple CSS engines
+      var destFontPaths = destFontFormats.map(function (fontFormat) {
+            return destFonts[fontFormat];
+          }),
+          destPaths = destFontPaths.concat([destCss]);
+      grunt.log.writeln('Files "' + destPaths.join('", "') + '" created.');
+
       // Callback
       done();
     });
