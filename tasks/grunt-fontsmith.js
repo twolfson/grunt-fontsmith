@@ -11,7 +11,8 @@ var fs = require('fs'),
 // and svg, dev-svg, woff, eot, ttf
 // TODO: This should be for extension adjustment. If not found, fallback to extension itself.
 module.exports = function (grunt) {
-  var braceExpand = grunt.file.glob.minimatch.braceExpand;
+  var minimatch =  grunt.file.glob.minimatch || grunt.file.minimatch,
+      braceExpand = minimatch.braceExpand;
 
   function gruntFontsmith() {
     // Localize info
@@ -118,11 +119,12 @@ module.exports = function (grunt) {
 
       // TODO: We need to support also writing out CSS to JSON (visions of requiring JSON and using it in HTML)
       // TODO: This means writing out multiple CSS destinations (and interpretting CSS multiple times)
-      var css = json2fontcss({
+      var ext = path.extname(destCss).slice(1),
+          css = json2fontcss({
             chars: chars,
             fonts: destFonts,
             fontFamily: fontFamily,
-            template: path.extname(filepath).slice(1),
+            template: ext === 'styl' ? 'stylus' : ext,
             options: data.cssOptions || {}
           });
 

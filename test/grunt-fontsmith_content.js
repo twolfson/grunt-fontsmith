@@ -26,8 +26,13 @@ module.exports = {
     // Execute the cmd and task combination
     var that = this;
     exec('grunt font:' + this.task, function (err, stdout, stderr) {
+      // If there was an error, show me the output
+      if (err) {
+        console.log(stdout, stderr);
+      }
+
       // Fallback error
-      if (!err && stderr) {
+      if (stderr) {
         err = new Error(stderr);
       }
 
