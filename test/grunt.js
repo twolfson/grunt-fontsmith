@@ -20,14 +20,12 @@ module.exports = function (grunt) {
         //   'eot': 'actual_files/more.like.eof'
         // }
 
-        // TODO: Custom routing of font filepaths for CSS intricacies
+        // // Optional: Custom routing of font filepaths for CSS intricacies
         // cssRouter: function (fontpath) {
         //   return fontpath;
         // }
 
-        // TODO: Allow custom naming of font families for multi support
-        // TODO: It would be smart to name it after the task ;)
-        // TODO: Don't forget to escape this (JSON.stringify)
+        // // Optional: Custom naming of font families for multi-task support
         // fontFamily: 'my-icon-font'
       }
     }
