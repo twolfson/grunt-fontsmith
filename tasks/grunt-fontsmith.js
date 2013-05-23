@@ -122,7 +122,7 @@ module.exports = function (grunt) {
             chars: chars,
             fonts: destFonts,
             fontFamily: fontFamily,
-            template: 'less',
+            template: path.extname(filepath).slice(1),
             options: data.cssOptions || {}
           });
 
