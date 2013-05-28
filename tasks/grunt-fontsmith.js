@@ -52,12 +52,12 @@ module.exports = function (grunt) {
     // Localize info
     var data = this.data,
         src = data.src,
-        destCss = data.destCss,
+        destCssRaw = data.destCss,
         destFontsRaw = data.destFonts,
         that = this;
 
     // Verify everything exists
-    if (!src || !destCss || !destFontsRaw) {
+    if (!src || !destCssRaw || !destFontsRaw) {
       return grunt.fatal("grunt.font requires a src, destCss, and destFonts property");
     }
 
@@ -91,8 +91,7 @@ module.exports = function (grunt) {
       }
 
       // Write out fonts via binary encoding
-      var cssDir = path.dirname(destCss),
-          fonts = result.fonts;
+      var fonts = result.fonts;
       destFontFormats.forEach(function (fontFormat) {
         // Localize the font destinations
         var filepath = destFonts[fontFormat],
@@ -108,7 +107,7 @@ module.exports = function (grunt) {
 
       // Generate relative font paths
       var relFonts = {},
-          router = data.router || url.relative.bind(url, destCss);
+          router = data.router || url.relative.bind(url, destCssRaw);
       destFontFormats.forEach(function (fontFormat) {
         var filepath = destFonts[fontFormat],
             relpath = router(filepath);
@@ -127,19 +126,20 @@ module.exports = function (grunt) {
             };
           });
 
+      // Expand CSS paths into extension-based object
       // TODO: We need to support also writing out CSS to JSON (visions of requiring JSON and using it in HTML)
       // TODO: This means writing out multiple CSS destinations (and interpretting CSS multiple times)
-      var ext = path.extname(destCss).slice(1),
+      var ext = path.extname(destCssRaw).slice(1),
           css = json2fontcss({
             chars: chars,
-            fonts: destFonts,
+            fonts: relFonts,
             fontFamily: fontFamily,
             template: ext === 'styl' ? 'stylus' : ext,
             options: data.cssOptions || {}
           });
 
       // Write out CSS
-      grunt.file.write(destCss, css, 'utf8');
+      grunt.file.write(destCssRaw, css, 'utf8');
 
       // If there were any errors, display them
       if (that.errorCount) {
@@ -151,7 +151,7 @@ module.exports = function (grunt) {
       var destFontPaths = destFontFormats.map(function (fontFormat) {
             return destFonts[fontFormat];
           }),
-          destPaths = destFontPaths.concat([destCss]);
+          destPaths = destFontPaths.concat([destCssRaw]);
       grunt.log.writeln('Files "' + destPaths.join('", "') + '" created.');
 
       // Callback
