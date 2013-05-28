@@ -18,11 +18,22 @@ if (!gruntFontsmithSrc.match(/\s+\/\/[^\n]*=[^\n]*tmp.json/)) {
 
 // Expose our test commands
 module.exports = {
-  'A set of SVGs': function () {
-    this.task = 'default';
-    this.cssFiles = ['font.styl'];
-    this.fontFiles = ['font.eot', 'font.svg', 'font.ttf', 'font.woff'];
-  },
+  'A set of SVGs': function () {},
+  'processed into a single font and stylesheet': [function () {
+    this.task = 'single';
+    this.cssFiles = ['single/font.styl'];
+    this.fontFiles = ['single/font.svg'];
+  }, 'processed via grunt-fontsmith'],
+  'processed into multiple fonts and stylesheets': [function () {
+    this.task = 'multiple';
+    this.cssFiles = ['multiple/font.styl', 'multiple/font.json'];
+    this.fontFiles = ['multiple/font.svg', 'multiple/font.ttf', 'multiple/font.eot', 'multiple/font.woff'];
+  }, 'processed via grunt-fontsmith'],
+  'processed into overridden fonts and stylesheets': [function () {
+    this.task = 'overrides';
+    this.cssFiles = ['overrides/font.less', 'overrides/font.json'];
+    this.fontFiles = ['overrides/font.ttf', 'overrides/font.svg'];
+  }, 'processed via grunt-fontsmith'],
   'processed via grunt-fontsmith': function (done) {
     // Bump the timeout for fontsmith
     this.timeout(10000);
@@ -52,14 +63,24 @@ module.exports = {
     });
 
   },
-  'generates a stylesheet': function () {
+
+  // CSS assertions
+  'produces a stylesheet': 'produces stylesheets',
+  'produces multiple stylesheets': 'produces stylesheets',
+  'produces stylesheets with proper formats': 'produces stylesheets',
+  'produces stylesheets': function () {
     // Assert each of the CSS files exist
     this.cssFiles.forEach(function (filename) {
       var actualContent = fs.readFileSync(actualDir + filename, 'utf8');
       assert(actualContent);
     });
   },
-  'generates fonts': function () {
+
+  // Font assertions
+  'produces a font': 'produces fonts',
+  'produces multiple fonts': 'produces fonts',
+  'produces fonts with proper formats': 'produces fonts',
+  'produces fonts': function () {
     // Assert each of the fonts match as expected
     this.fontFiles.forEach(function (filename) {
       var expectedContent = fs.readFileSync(expectedDir + filename, 'binary'),

@@ -1,6 +1,6 @@
 module.exports = {
   'A set of SVGs': {
-    'processed into a single font and a single stylesheet': {
+    'processed into a single font and stylesheet': {
       'produces a stylesheet': true,
       'produces a font': true
     },
@@ -10,7 +10,7 @@ module.exports = {
     },
     'processed into overridden fonts and stylesheets': {
       'produces stylesheets with proper formats': true,
-      'produces fonts with proper forms': true
+      'produces fonts with proper formats': true
     }
   }
 };
