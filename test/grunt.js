@@ -1,10 +1,30 @@
 module.exports = function (grunt) {
   grunt.initConfig({
     font: {
-      'default': {
+      single: {
         src: ['test_files/*.svg'],
-        destCss: 'actual_files/font.styl',
-        destFonts: 'actual_files/font.{svg,woff,eot,ttf}'
+        destCss: 'actual_files/single/font.styl',
+        destFonts: 'actual_files/single/font.svg'
+      },
+      multiple: {
+        src: ['test_files/*.svg'],
+        destCss: 'actual_files/multiple/font.{styl,json}',
+        destFonts: 'actual_files/multiple/font.{svg,ttf,eot,woff}'
+      },
+      overrides: {
+        src: ['test_files/*.svg'],
+        destCss: {
+          // Override specific engines
+          json: 'actual_files/overrides/font.less',
+          styl: 'actual_files/overrides/font.json'
+        },
+        destFonts: {
+          // Override specific engines
+          woff: 'actual_files/overrides/waffles.ttf',
+          eot: 'actual_files/overrides/eof.svg'
+        }
+      }
+      // 'every-option': {
         // // Multiple CSS output support
         // destCss: 'actual_files/font.{styl,json}',
 
@@ -20,7 +40,7 @@ module.exports = function (grunt) {
         // ]
 
         // // Alternative formats (2)
-        // destFonts: {
+        // destCss: {
         //   // Override specific engines
         //   json: 'actual_files/font.less',
         //   styl: 'actual_files/font.json'
@@ -58,7 +78,7 @@ module.exports = function (grunt) {
         //   json: {},
         //   styl: {}
         // }
-      }
+      // }
     }
   });
 
