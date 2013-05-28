@@ -14,6 +14,40 @@ module.exports = function (grunt) {
   var minimatch =  grunt.file.glob.minimatch || grunt.file.minimatch,
       braceExpand = minimatch.braceExpand;
 
+  // Helper function for objectifying src into type-first
+  function expandToObject(input) {
+    // If the input is a string, encapsulate it as an array
+    var retObj = input;
+    if (typeof retObj === 'string') {
+      retObj = [input];
+    }
+
+    // If the retObj is an array
+    if (Array.isArray(retObj)) {
+      // Collect the inputs into an object
+      var inputArr = retObj;
+      retObj = {};
+
+      // Iterate over the inputs
+      inputArr.forEach(function (inputStr) {
+        // Break down any brace exapansions
+        var inputPaths = braceExpand(inputStr);
+
+        // Iterate over the paths
+        inputPaths.forEach(function (filepath) {
+          // Grab the extension and save it under its key
+          // TODO: Deal with observer pattern here.
+          // TODO: Will probably go `classical` here
+          var ext = path.extname(filepath).slice(1);
+          retObj[ext] = filepath;
+        });
+      });
+    }
+
+    // Return the objectified src
+    return retObj;
+  }
+
   function gruntFontsmith() {
     // Localize info
     var data = this.data,
@@ -29,31 +63,7 @@ module.exports = function (grunt) {
 
     // Normalize and collect info from file patterns
     var srcFiles = grunt.file.expand(src),
-        destFontStrs = destFontsRaw,
-        destFonts = destFontsRaw;
-
-    // If the font format is a string, encapsulate it as an array
-    if (typeof destFontsRaw === 'string') {
-      destFontStrs = [destFontsRaw];
-    }
-
-    // If the font format is an array, collect them into an object
-    if (Array.isArray(destFontStrs)) {
-      destFonts = {};
-
-      // Iterate over the fonts
-      destFontStrs.forEach(function (destFontStr) {
-        // Break down any brace exapansions
-        var destFontPaths = braceExpand(destFontStr);
-
-        // Iterate over the fonts
-        destFontPaths.forEach(function (filepath) {
-          // Grab the extension and save it under its key
-          var ext = path.extname(filepath).slice(1);
-          destFonts[ext] = filepath;
-        });
-      });
-    }
+        destFonts = expandToObject(destFontsRaw);
 
     // Prepare our parameters for fontsmith
     var destFontFormats = Object.getOwnPropertyNames(destFonts),
