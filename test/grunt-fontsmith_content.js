@@ -9,6 +9,13 @@ var actualDir = __dirname + '/actual_files/',
     expectedDir = __dirname + '/expected_files/';
 try { fs.unlinkSync(actualDir); } catch (e) {}
 
+// DEV: Warn myself if we are loading from offline
+var gruntFontsmithSrc = fs.readFileSync(__dirname + '/../tasks/grunt-fontsmith.js', 'utf8');
+if (!gruntFontsmithSrc.match(/\s+\/\/[^\n]*=[^\n]*tmp.json/)) {
+  console.error('WARNING!!!');
+  console.error('YOU ARE WORKING ON AN OFFLINE VERSION!!!');
+}
+
 // Expose our test commands
 module.exports = {
   'A set of SVGs': function () {
