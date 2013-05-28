@@ -105,41 +105,51 @@ module.exports = function (grunt) {
         fs.writeFileSync(filepath, font, 'binary');
       });
 
-      // Generate relative font paths
-      var relFonts = {},
-          router = data.router || url.relative.bind(url, destCssRaw);
-      destFontFormats.forEach(function (fontFormat) {
-        var filepath = destFonts[fontFormat],
-            relpath = router(filepath);
-        relFonts[fontFormat] = relpath;
-      });
-
-      // Generate CSS
-      var map = result.map,
-          names = Object.getOwnPropertyNames(map),
-          target = that.target,
-          fontFamily = data.fontFamily || 'fontsmith-' + target,
-          chars = names.map(function (name) {
-            return {
-              name: name,
-              value: map[name].toString(16)
-            };
-          });
-
       // Expand CSS paths into extension-based object
-      // TODO: We need to support also writing out CSS to JSON (visions of requiring JSON and using it in HTML)
-      // TODO: This means writing out multiple CSS destinations (and interpretting CSS multiple times)
-      var ext = path.extname(destCssRaw).slice(1),
-          css = json2fontcss({
-            chars: chars,
-            fonts: relFonts,
-            fontFamily: fontFamily,
-            template: ext === 'styl' ? 'stylus' : ext,
-            options: data.cssOptions || {}
-          });
+      var destCss = expandToObject(destCssRaw),
+          destCssFormats = Object.getOwnPropertyNames(destCss);
 
-      // Write out CSS
-      grunt.file.write(destCssRaw, css, 'utf8');
+      // Iterate over the CSS formats
+      destCssFormats.forEach(function (cssFormat) {
+        // Grab the path of the target CSS
+        var cssPath = destCss[cssFormat];
+
+        // Generate relative font paths
+        var relFonts = {},
+            router = data.router || url.relative.bind(url, cssPath);
+        destFontFormats.forEach(function (fontFormat) {
+          var filepath = destFonts[fontFormat],
+              relpath = router(filepath, cssPath);
+          console.log(relpath);
+          relFonts[fontFormat] = relpath;
+        });
+
+        // Prepare parameters for CSS conversion
+        var map = result.map,
+            names = Object.getOwnPropertyNames(map),
+            target = that.target,
+            fontFamily = data.fontFamily || 'fontsmith-' + target,
+            chars = names.map(function (name) {
+              return {
+                name: name,
+                value: map[name].toString(16)
+              };
+            });
+
+        // Generate CSS
+        var css = json2fontcss({
+              chars: chars,
+              fonts: relFonts,
+              fontFamily: fontFamily,
+              // TODO: Move off of this and onto a proper observer pattern
+              // TODO: Even better, the objectifier should pre-format this
+              template: cssFormat === 'styl' ? 'stylus' : cssFormat,
+              options: data.cssOptions || {}
+            });
+
+        // Write out CSS
+        grunt.file.write(cssPath, css, 'utf8');
+      });
 
       // If there were any errors, display them
       if (that.errorCount) {
