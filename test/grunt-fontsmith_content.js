@@ -92,6 +92,8 @@ module.exports = {
           // maxPassing = 50,
           // isPassing = bitDiff < maxPassing;
       // assert(isPassing, 'Font "' + filename + '" is ' + bitDiff + ' (over ' + maxPassing + ') different from expected');
+
+      // TODO: Load up each font via data/html URI, screenshot, and compare screenshots (hopefully 1:1)
           isPassing = actualContent;
       assert(isPassing);
     });
