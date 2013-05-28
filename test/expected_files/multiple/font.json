@@ -1,0 +1,28 @@
+{
+    "chars": [
+        {
+            "name": "eye",
+            "value": "e000",
+            "fontFamily": "fontsmith-multiple"
+        },
+        {
+            "name": "building_block",
+            "value": "e001",
+            "fontFamily": "fontsmith-multiple"
+        },
+        {
+            "name": "moon",
+            "value": "e002",
+            "fontFamily": "fontsmith-multiple"
+        }
+    ],
+    "fonts": {
+        "eot": "font.eot",
+        "woff": "font.woff",
+        "ttf": "font.ttf",
+        "svg": "font.svg"
+    },
+    "fontFamily": "fontsmith-multiple",
+    "options": {},
+    "escapedFontFamily": "\"fontsmith-multiple\""
+}

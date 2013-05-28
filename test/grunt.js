@@ -15,8 +15,8 @@ module.exports = function (grunt) {
         src: ['test_files/*.svg'],
         destCss: {
           // Override specific engines
-          json: 'actual_files/overrides/font.less',
-          styl: 'actual_files/overrides/font.json'
+          json: 'actual_files/overrides/jason.less',
+          styl: 'actual_files/overrides/styleee.json'
         },
         destFonts: {
           // Override specific engines

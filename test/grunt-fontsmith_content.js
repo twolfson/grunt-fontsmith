@@ -31,7 +31,7 @@ module.exports = {
   }, 'processed via grunt-fontsmith'],
   'processed into overridden fonts and stylesheets': [function () {
     this.task = 'overrides';
-    this.cssFiles = ['overrides/font.less', 'overrides/font.json'];
+    this.cssFiles = ['overrides/jason.less', 'overrides/styleee.json'];
     this.fontFiles = ['overrides/waffles.ttf', 'overrides/eof.svg'];
   }, 'processed via grunt-fontsmith'],
   'processed via grunt-fontsmith': function (done) {
@@ -72,7 +72,8 @@ module.exports = {
     // Assert each of the CSS files exist
     // TODO: Assert match on all parts except for character values
     this.cssFiles.forEach(function (filename) {
-      var actualContent = fs.readFileSync(actualDir + filename, 'utf8');
+      var expectedContent = fs.readFileSync(expectedDir + filename, 'utf8');
+          actualContent = fs.readFileSync(actualDir + filename, 'utf8');
       assert(actualContent);
     });
   },
