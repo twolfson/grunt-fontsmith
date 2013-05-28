@@ -109,6 +109,22 @@ module.exports = function (grunt) {
       var destCss = expandToObject(destCssRaw),
           destCssFormats = Object.getOwnPropertyNames(destCss);
 
+      // Localize CSS router and options
+      var cssRouter = data.cssRouter,
+          cssOptions = data.cssOptions || {};
+
+      // If there is no CSS router
+      if (!cssRouter) {
+        // Create a url router object
+        cssRouter = {};
+
+        // For each css format, generate a router
+        destCssFormats.forEach(function (cssFormat) {
+          var cssPath = destCss[cssFormat];
+          cssRouter[cssFormat] = url.relative.bind(url, cssPath);
+        });
+      }
+
       // Iterate over the CSS formats
       destCssFormats.forEach(function (cssFormat) {
         // Grab the path of the target CSS
@@ -116,7 +132,7 @@ module.exports = function (grunt) {
 
         // Generate relative font paths
         var relFonts = {},
-            router = data.router || url.relative.bind(url, cssPath);
+            router = cssRouter[cssFormat] || cssRouter;
         destFontFormats.forEach(function (fontFormat) {
           var filepath = destFonts[fontFormat],
               relpath = router(filepath, cssPath);
@@ -144,7 +160,7 @@ module.exports = function (grunt) {
               // TODO: Move off of this and onto a proper observer pattern
               // TODO: Even better, the objectifier should pre-format this
               template: cssFormat === 'styl' ? 'stylus' : cssFormat,
-              options: data.cssOptions || {}
+              options: cssOptions[cssFormat] || {}
             });
 
         // Write out CSS
