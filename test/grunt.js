@@ -22,14 +22,14 @@ module.exports = function (grunt) {
         // // Alternative formats (2)
         // destFonts: {
         //   // Override specific engines
-        //   'json': 'actual_files/font.less',
-        //   'styl': 'actual_files/font.json'
+        //   json: 'actual_files/font.less',
+        //   styl: 'actual_files/font.json'
         // }
         // destFonts: {
         //   // Override specific engines
         //   'dev-svg': 'actual_files/font.svg',
-        //   'woff': 'actual_files/font.waffles',
-        //   'eot': 'actual_files/more.like.eof'
+        //   woff: 'actual_files/font.waffles',
+        //   eot: 'actual_files/more.like.eof'
         // }
 
         // // Optional: Custom routing of font filepaths for CSS
@@ -37,11 +37,27 @@ module.exports = function (grunt) {
         //   return fontpath;
         // }
 
+        // // Alternative format for format-specific routing
+        // cssRouter: {
+        //     json: function (fontpath) {
+        //       return fontpath;
+        //     },
+        //     styl: function (fontpath) {
+
+        //     }
+        // }
+
         // // Optional: Custom naming of font families for multi-task support
         // fontFamily: 'my-icon-font'
 
         // // Optional: CSS options for json2fontcss
         // cssOptions: {}
+
+        // // Alternative for format-specific options
+        // cssOptions: {
+        //   json: {},
+        //   styl: {}
+        // }
       }
     }
   });
