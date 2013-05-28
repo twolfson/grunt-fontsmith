@@ -51,9 +51,9 @@ module.exports = function (grunt) {
         // fontFamily: 'my-icon-font'
 
         // // Optional: CSS options for json2fontcss
-        // cssOptions: {}
-
-        // // Alternative for format-specific options
+        // // Unfortunately, this must be delimited by extension format
+        // // It is impractical to share a common options set across formatters
+        // // as well as introspect an object for reserved keys since it limits semantic options (e.g. SCSS option for SASS)
         // cssOptions: {
         //   json: {},
         //   styl: {}
