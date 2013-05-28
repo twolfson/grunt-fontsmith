@@ -21,6 +21,8 @@ This requires installing [phantomjs][phantomjs] and having it accessible from yo
 [phantomjs]: http://www.phantomjs.org/
 
 ## Usage
+TODO: Document multiple CSS engine and API changes
+
 ```js
 grunt.initConfig({
   font: {
