@@ -1,12 +1,12 @@
-$eye_font_family = "fontsmith-multiple";
+$eye_font_family = "fontsmith-single";
 $eye_value = "\e000";
-$eye = "fontsmith-multiple" "\e000";
-$building_block_font_family = "fontsmith-multiple";
+$eye = "fontsmith-single" "\e000";
+$building_block_font_family = "fontsmith-single";
 $building_block_value = "\e001";
-$building_block = "fontsmith-multiple" "\e001";
-$moon_font_family = "fontsmith-multiple";
+$building_block = "fontsmith-single" "\e001";
+$moon_font_family = "fontsmith-single";
 $moon_value = "\e002";
-$moon = "fontsmith-multiple" "\e002";
+$moon = "fontsmith-single" "\e002";
 
 iconFontFamily($char) {
   font-family: $char[0];
@@ -36,12 +36,8 @@ icon($char) {
 }
 
 @font-face {
-  font-family: "fontsmith-multiple";
-  src:url("font.eot");
-  src:url("font.eot?#iefix") format("embedded-opentype"),
-    url("font.woff") format("woff"),
-    url("font.ttf") format("truetype"),
-    url("font.svg#icomoon") format("svg");
+  font-family: "fontsmith-single";
+  src:url("font.svg#icomoon") format("svg");
   font-weight: normal;
   font-style: normal;
 }

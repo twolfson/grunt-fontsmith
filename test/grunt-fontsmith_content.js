@@ -70,7 +70,6 @@ module.exports = {
   'produces stylesheets with proper formats': 'produces stylesheets',
   'produces stylesheets': function () {
     // Assert each of the CSS files exist
-    // TODO: Assert match on all parts except for character values
     this.cssFiles.forEach(function (filename) {
       // Grab the expected and actual content
       var expectedContent = fs.readFileSync(expectedDir + filename, 'utf8'),
