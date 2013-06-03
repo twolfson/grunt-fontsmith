@@ -98,20 +98,31 @@ module.exports = {
   'produces fonts': function (done) {
     // Assert each of the fonts match as expected
     // TODO: Deal with being offline and needing async
-    async.forEach(this.fontFiles, function testFont (filename, cb) {
-      exec('phantomjs test_scripts/diff_fonts.js ' + filename, function (err, stdout, stderr) {
-        // Fallback error with stderr
-        if (!err && stderr) {
-          err = new Error(stderr);
-        }
+    async.forEach(this.fontFiles, function testFont (relpath, cb) {
+      // In parallel, screenshot actual font vs expected font
+      var actualPath = path.join(actualDir, relpath),
+          expectedPath = path.join(expectedDir, relpath);
+      async.map([actualPath, expectedPath], function screenshotFont (filepath, cb) {
+        exec('phantomjs test_scripts/screenshot_font.js ' + filepath, function (err, stdout, stderr) {
+          // Fallback error with stderr
+          if (!err && stderr) {
+            err = new Error(stderr);
+          }
 
-        // If there was stdout, log it
-        if (stdout) {
-          console.log('FONT ASSERT STDOUT: ', stdout);
-        }
+          // If there was stdout, log it
+          if (stdout) {
+            console.log('SCREENSHOT FONT STDOUT: ', stdout);
+          }
 
-        // Callback with our error
-        cb(err);
+          // Callback with our error
+          cb(err);
+        });
+      }, function compareScreenshots (err, screenshots) {
+        // If there was an error, callback with it
+        if (err) { return cb(err); }
+
+        // Compare the generated screenshots
+        // TODO: Might need to use imagemagick to compare images?
       });
     }, done);
   }
