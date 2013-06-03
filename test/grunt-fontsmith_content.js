@@ -87,7 +87,6 @@ module.exports = {
       // Assert that only the character lines are different
       // TODO: If we ever have more than 3 sprites, update
       // the tests to be explicit about how many characters are being used
-      console.log(differentLines);
       assert(differentLines.length <= 3);
     });
   },
