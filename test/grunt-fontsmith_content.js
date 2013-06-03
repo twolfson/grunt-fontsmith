@@ -2,7 +2,7 @@
 var fs = require('fs'),
     exec = require('child_process').exec,
     assert = require('assert'),
-    _s = require('underscore.string');
+    async = require('async');
 
 // Clean up actual_files/
 var actualDir = __dirname + '/actual_files/',
@@ -105,9 +105,14 @@ module.exports = {
           err = new Error(stderr);
         }
 
+        // If there was stdout, log it
+        if (stdout) {
+          console.log('FONT ASSERT STDOUT: ', stdout);
+        }
+
         // Callback with our error
-        done(err);
+        cb(err);
       });
-    }, cb);
+    }, done);
   }
 };

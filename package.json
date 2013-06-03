@@ -37,12 +37,12 @@
   "devDependencies": {
     "grunt": "~0.3.17",
     "doubleshot": "~1.0.2",
-    "underscore.string": "~2.3.1"
+    "async": "~0.2.7"
   },
   "_devDependencies": {
     "grunt": "~0.4.0",
     "doubleshot": "~1.0.2",
-    "underscore.string": "~2.3.1"
+    "async": "~0.2.7"
   },
   "optionalDependencies": {},
   "keywords": [
