@@ -95,20 +95,19 @@ module.exports = {
   'produces a font': 'produces fonts',
   'produces multiple fonts': 'produces fonts',
   'produces fonts with proper formats': 'produces fonts',
-  'produces fonts': function () {
+  'produces fonts': function (done) {
     // Assert each of the fonts match as expected
-    this.fontFiles.forEach(function (filename) {
-      var expectedContent = fs.readFileSync(expectedDir + filename, 'binary'),
-          actualContent = fs.readFileSync(actualDir + filename, 'binary');
-      // TODO: Instead of diffing fonts, use them via phantomjs or similar for a proper verification of functionality
-          // bitDiff = _s.levenshtein(actualContent, expectedContent),
-          // maxPassing = 50,
-          // isPassing = bitDiff < maxPassing;
-      // assert(isPassing, 'Font "' + filename + '" is ' + bitDiff + ' (over ' + maxPassing + ') different from expected');
+    // TODO: Deal with being offline and needing async
+    async.forEach(this.fontFiles, function testFont (filename, cb) {
+      exec('phantomjs test_scripts/diff_fonts.js ' + filename, function (err, stdout, stderr) {
+        // Fallback error with stderr
+        if (!err && stderr) {
+          err = new Error(stderr);
+        }
 
-      // TODO: Load up each font via data/html URI, screenshot, and compare screenshots (hopefully 1:1)
-          isPassing = actualContent;
-      assert(isPassing);
-    });
+        // Callback with our error
+        done(err);
+      });
+    }, cb);
   }
 };
