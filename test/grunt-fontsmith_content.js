@@ -72,9 +72,24 @@ module.exports = {
     // Assert each of the CSS files exist
     // TODO: Assert match on all parts except for character values
     this.cssFiles.forEach(function (filename) {
-      var expectedContent = fs.readFileSync(expectedDir + filename, 'utf8');
+      // Grab the expected and actual content
+      var expectedContent = fs.readFileSync(expectedDir + filename, 'utf8'),
           actualContent = fs.readFileSync(actualDir + filename, 'utf8');
-      assert(actualContent);
+
+      // Break down the content into separate lines
+      var expectedLines = expectedContent.split('\n'),
+          actualLines = actualContent.split('\n');
+
+      // Determine how many lines are different
+      var differentLines = expectedLines.filter(function (line) {
+            return actualLines.indexOf(line) === -1;
+          });
+
+      // Assert that only the character lines are different
+      // TODO: If we ever have more than 3 sprites, update
+      // the tests to be explicit about how many characters are being used
+      console.log(differentLines);
+      assert(differentLines.length <= 3);
     });
   },
 
