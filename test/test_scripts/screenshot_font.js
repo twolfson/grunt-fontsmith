@@ -8,6 +8,6 @@ var fontCss = 'svg';
 if (fontType === 'eot') {
 
 }
-console.log(fonts);
+console.log(filepath, fontType);
 
 phantom.exit(0);

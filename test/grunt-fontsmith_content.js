@@ -1,5 +1,6 @@
 // Load in modules
 var fs = require('fs'),
+    path = require('path'),
     exec = require('child_process').exec,
     assert = require('assert'),
     async = require('async');
@@ -22,17 +23,38 @@ module.exports = {
   'processed into a single font and stylesheet': [function () {
     this.task = 'single';
     this.cssFiles = ['single/font.styl'];
-    this.fontFiles = ['single/font.svg'];
+    this.fontFiles = [{
+      path: 'single/font.svg',
+      format: 'svg'
+    }];
   }, 'processed via grunt-fontsmith'],
   'processed into multiple fonts and stylesheets': [function () {
     this.task = 'multiple';
     this.cssFiles = ['multiple/font.styl', 'multiple/font.json'];
-    this.fontFiles = ['multiple/font.svg', 'multiple/font.ttf', 'multiple/font.eot', 'multiple/font.woff'];
+    this.fontFiles = [{
+      path: 'multiple/font.svg',
+      format: 'svg'
+    }, {
+      path: 'multiple/font.ttf',
+      format: 'ttf'
+    }, {
+      path: 'multiple/font.eot',
+      format: 'eot'
+    }, {
+      path: 'multiple/font.woff',
+      format: 'woff'
+    }];
   }, 'processed via grunt-fontsmith'],
   'processed into overridden fonts and stylesheets': [function () {
     this.task = 'overrides';
     this.cssFiles = ['overrides/jason.less', 'overrides/styleee.json'];
-    this.fontFiles = ['overrides/waffles.ttf', 'overrides/eof.svg'];
+    this.fontFiles = [{
+      path: 'overrides/waffles.ttf',
+      format: 'woff'
+    }, {
+      path: 'overrides/eof.svg',
+      format: 'eot'
+    }];
   }, 'processed via grunt-fontsmith'],
   'processed via grunt-fontsmith': function (done) {
     // Bump the timeout for fontsmith
@@ -98,12 +120,12 @@ module.exports = {
   'produces fonts': function (done) {
     // Assert each of the fonts match as expected
     // TODO: Deal with being offline and needing async
-    async.forEach(this.fontFiles, function testFont (relpath, cb) {
+    async.forEach(this.fontFiles, function testFont (font, cb) {
       // In parallel, screenshot actual font vs expected font
-      var actualPath = path.join(actualDir, relpath),
-          expectedPath = path.join(expectedDir, relpath);
+      var actualPath = path.join(actualDir, font.path),
+          expectedPath = path.join(expectedDir, font.path);
       async.map([actualPath, expectedPath], function screenshotFont (filepath, cb) {
-        exec('phantomjs test_scripts/screenshot_font.js ' + filepath, function (err, stdout, stderr) {
+        exec('phantomjs test_scripts/screenshot_font.js ' + filepath + ' ' + font.format, function (err, stdout, stderr) {
           // Fallback error with stderr
           if (!err && stderr) {
             err = new Error(stderr);
