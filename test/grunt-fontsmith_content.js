@@ -17,6 +17,10 @@ if (!gruntFontsmithSrc.match(/\s+\/\/[^\n]*=[^\n]*tmp.json/)) {
   console.error('YOU ARE WORKING ON AN OFFLINE VERSION!!!');
 }
 
+// Prepare common font ordering for testing
+var characterOrder = require('./test_files/character_order.json'),
+    characters = characterOrder.values;
+
 // Expose our test commands
 module.exports = {
   // Fixture setups
@@ -28,6 +32,7 @@ module.exports = {
       path: 'single/font.svg',
       format: 'svg'
     }];
+    this.order = require('./test_files/character_order.json');
   }, 'processed via grunt-fontsmith'],
 
   'processed into multiple fonts and stylesheets': [function () {
