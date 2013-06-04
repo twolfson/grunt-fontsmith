@@ -127,6 +127,18 @@ module.exports = {
   'produces multiple fonts': 'produces fonts',
   'produces fonts with proper formats': 'produces fonts',
   'produces fonts': function (done) {
+    // TODO: Latest gameplan
+    // In each of the one-off prep cases, generate the Stylus/JSON/whatever to CSS
+    // Save the CSS to a temporary file
+    // Do the same pre-emptively for the expected fonts
+    // Tell phantomjs where to load the font from
+    // Screenshot the sets of CSS
+
+    // TODO: The font-family definition will likely be wrong (too much excess)
+    // so we might need to take on a hybrid approach here
+    // either replace the font-family block
+    // or replace it programatically in the CSS language (e.g. in Stylus)
+
     // Assert each of the fonts match as expected
     // TODO: Deal with being offline and needing async
     async.forEach(this.fontFiles, function testFont (font, cb) {
