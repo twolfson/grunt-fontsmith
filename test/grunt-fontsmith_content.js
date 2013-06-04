@@ -19,6 +19,7 @@ if (!gruntFontsmithSrc.match(/\s+\/\/[^\n]*=[^\n]*tmp.json/)) {
 
 // Expose our test commands
 module.exports = {
+  // Fixture setups
   'A set of SVGs': function () {},
   'processed into a single font and stylesheet': [function () {
     this.task = 'single';
@@ -28,6 +29,7 @@ module.exports = {
       format: 'svg'
     }];
   }, 'processed via grunt-fontsmith'],
+
   'processed into multiple fonts and stylesheets': [function () {
     this.task = 'multiple';
     this.cssFiles = ['multiple/font.styl', 'multiple/font.json'];
@@ -45,6 +47,7 @@ module.exports = {
       format: 'woff'
     }];
   }, 'processed via grunt-fontsmith'],
+
   'processed into overridden fonts and stylesheets': [function () {
     this.task = 'overrides';
     this.cssFiles = ['overrides/jason.less', 'overrides/styleee.json'];
@@ -56,6 +59,7 @@ module.exports = {
       format: 'eot'
     }];
   }, 'processed via grunt-fontsmith'],
+
   'processed via grunt-fontsmith': function (done) {
     // Bump the timeout for fontsmith
     this.timeout(10000);
