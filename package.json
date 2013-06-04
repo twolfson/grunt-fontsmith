@@ -37,12 +37,14 @@
   "devDependencies": {
     "grunt": "~0.3.17",
     "doubleshot": "~1.0.2",
-    "async": "~0.2.7"
+    "async": "~0.2.7",
+    "stylus": "~0.32.1"
   },
   "_devDependencies": {
     "grunt": "~0.4.0",
     "doubleshot": "~1.0.2",
-    "async": "~0.2.7"
+    "async": "~0.2.7",
+    "stylus": "~0.32.1"
   },
   "optionalDependencies": {},
   "keywords": [

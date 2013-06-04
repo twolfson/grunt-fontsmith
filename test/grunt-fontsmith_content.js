@@ -3,7 +3,8 @@ var fs = require('fs'),
     path = require('path'),
     exec = require('child_process').exec,
     assert = require('assert'),
-    async = require('async');
+    async = require('async'),
+    stylus = require('stylus');
 
 // Clean up actual_files/
 var actualDir = __dirname + '/actual_files/',
@@ -17,9 +18,17 @@ if (!gruntFontsmithSrc.match(/\s+\/\/[^\n]*=[^\n]*tmp.json/)) {
   console.error('YOU ARE WORKING ON AN OFFLINE VERSION!!!');
 }
 
-// Prepare common font ordering for testing
-var characterOrder = require('./test_files/character_order.json'),
-    characters = characterOrder.values;
+// TODO: Render expected CSS ... or just steal from actual once we generate it =P
+
+// Prepare common stylus for font testing
+var charStyl = [
+  '.icon-eye',
+  '  icon($eye)',
+  '.icon-building_block',
+  '  icon($building_block)',
+  '.icon-moon',
+  '  icon($moon)'
+].join('\n');
 
 // Expose our test commands
 module.exports = {
@@ -32,7 +41,6 @@ module.exports = {
       path: 'single/font.svg',
       format: 'svg'
     }];
-    this.order = require('./test_files/character_order.json');
   }, 'processed via grunt-fontsmith'],
 
   'processed into multiple fonts and stylesheets': [function () {
@@ -123,7 +131,18 @@ module.exports = {
   },
 
   // Font assertions
-  'produces a font': 'produces fonts',
+  'produces a font': [function (done) {
+    var styl = fs.readFileSync(actualDir + '/multiple/font.styl', 'utf8');
+    console.log('hey');
+    stylus.render(styl + '\n' + charStyl, function (err, css) {
+      // TODO: Save this and embrace doubleshot modularity
+      console.log(css);
+      console.log('yyz');
+      // TODO: Generate tmpfile
+      // TODO: Write CSS to tmpfile
+      done(err);
+    });
+  }, 'produces fonts'],
   'produces multiple fonts': 'produces fonts',
   'produces fonts with proper formats': 'produces fonts',
   'produces fonts': function (done) {
