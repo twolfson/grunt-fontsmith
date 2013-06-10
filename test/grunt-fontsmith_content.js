@@ -133,10 +133,13 @@ module.exports = {
 
   // Font assertions
   'produces a font': [function (done) {
-    // TODO: Inject full font path into CSS
     // Load in Stylus and save reference to this
     var styl = fs.readFileSync(expectedDir + '/multiple/font.styl', 'utf8'),
         that = this;
+
+    // Replace font path with our font path
+    // TODO: Pretty sure this is a multi-css generation on a per-font basis =(
+    styl = styl.replace('font.svg', actualDir + this.fontFiles[0].path);
 
     // Compile our CSS
     stylus.render(styl + '\n' + charStyl, function (err, css) {
