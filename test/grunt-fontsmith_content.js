@@ -187,7 +187,7 @@ module.exports = {
         cb(null, tmpFile.path);
       }
 
-      function screenshotFont(cssPath, cb) {
+      function screenshotFont(options, cssPath, cb) {
         // Screenshot the font in use
         exec('phantomjs test_scripts/screenshot_font.js ' + cssPath, function (err, stdout, stderr) {
           // Fallback error with stderr
@@ -198,7 +198,7 @@ module.exports = {
           // If there was stdout, log it
           if (stdout) {
             console.log('SCREENSHOT FONT STDOUT: ', stdout);
-            fs.writeFileSync('tmp.' + Math.random() + '.png', stdout, 'base64');
+            fs.writeFileSync('tmp.' + options.context + '.' + fontFormat + '.png', stdout, 'base64');
           }
 
           // Callback with our error and font
@@ -212,13 +212,13 @@ module.exports = {
           async.waterfall([
             stylus.render.bind(this, styl + '\n' + charStyl),
             saveToFile,
-            screenshotFont
+            screenshotFont.bind(this, {context: 'actual'})
           ], cb);
         },
         function renderExpectedFont (cb) {
           async.waterfall([
             saveToFile.bind(this, expectedCss),
-            screenshotFont
+            screenshotFont.bind(this, {context: 'expected'})
           ], cb);
         }
       ], function compareFonts (err, fonts) {
