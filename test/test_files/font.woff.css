@@ -4,19 +4,6 @@
   font-weight: normal;
   font-style: normal;
 }
-.icon-eye {
-  font-family: "fontsmith-multiple";
-  speak: none;
-  font-style: normal;
-  font-weight: normal;
-  font-variant: normal;
-  text-transform: none;
-  line-height: 1;
-  -webkit-font-smoothing: antialiased;
-}
-.icon-eye:before {
-  content: "\e000";
-}
 .icon-building_block {
   font-family: "fontsmith-multiple";
   speak: none;
@@ -28,7 +15,7 @@
   -webkit-font-smoothing: antialiased;
 }
 .icon-building_block:before {
-  content: "\e001";
+  content: "\e000";
 }
 .icon-moon {
   font-family: "fontsmith-multiple";
@@ -41,5 +28,18 @@
   -webkit-font-smoothing: antialiased;
 }
 .icon-moon:before {
+  content: "\e001";
+}
+.icon-eye {
+  font-family: "fontsmith-multiple";
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+}
+.icon-eye:before {
   content: "\e002";
 }
