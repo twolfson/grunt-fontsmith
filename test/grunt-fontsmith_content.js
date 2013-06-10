@@ -19,7 +19,13 @@ if (!gruntFontsmithSrc.match(/\s+\/\/[^\n]*=[^\n]*tmp.json/)) {
   console.error('YOU ARE WORKING ON AN OFFLINE VERSION!!!');
 }
 
-// TODO: Render expected CSS ... or just steal from actual once we generate it =P
+// Load in common expected CSS
+var expectedCssObj = {
+      eot: fs.readFileSync(__dirname + '/test_files/font.eot.css', 'utf8'),
+      svg: fs.readFileSync(__dirname + '/test_files/font.svg.css', 'utf8'),
+      ttf: fs.readFileSync(__dirname + '/test_files/font.ttf.css', 'utf8'),
+      woff: fs.readFileSync(__dirname + '/test_files/font.woff.css', 'utf8')
+    };
 
 // Prepare common stylus for font testing
 var charStyl = [
@@ -161,25 +167,24 @@ module.exports = {
       }
 
       // Replace font path with our font path
-      // TODO: For expected, use hard-coded stylsheets to verify .replace is working sanely
-      var filename = path.basename(fontFile),
+      var filepath = fontFile.path,
+          filename = path.basename(filepath),
           actualStyl = styl.replace(filename, actualDir + fontFile.path),
-          expectedStyl = styl.replace(filename, expectedDir + fontFile.path);
+          expectedCss = expectedCssObj[fontFormat];
+      expectedCss = expectedCss.replace(filename, expectedDir + fontFile.path);
 
-      function renderStyl(styl, cb) {
-        // Compile our CSS
-        stylus.render(styl + '\n' + charStyl, function (err, css) {
-          // If there is an error, callback with it
-          if (err) { return cb(err); }
+      // Assert our replacements were successful
+      assert.notEqual(actualStyl.indexOf(actualDir), -1);
+      assert.notEqual(expectedCss.indexOf(expectedDir), -1);
 
-          // DEV: PhantomJS may require a .css extension for proper mime-types and whatnot
-          // Save css to a temporary file
-          var tmpFile = new TempFile();
-          tmpFile.writeFileSync(css, 'utf8');
+      function saveToFile(content, cb) {
+        // DEV: PhantomJS may require a .css extension for proper mime-types and whatnot
+        // Save css to a temporary file
+        var tmpFile = new TempFile();
+        tmpFile.writeFileSync(content, 'utf8');
 
-          // Save a reference to the file path
-          cb(null, tmpFile.path);
-        });
+        // Save a reference to the file path
+        cb(null, tmpFile.path);
       }
 
       function screenshotFont(cssPath, cb) {
@@ -193,7 +198,7 @@ module.exports = {
           // If there was stdout, log it
           if (stdout) {
             console.log('SCREENSHOT FONT STDOUT: ', stdout);
-            fs.writeFileSync('tmp.png', stdout, 'base64');
+            fs.writeFileSync('tmp.' + Math.random() + '.png', stdout, 'base64');
           }
 
           // Callback with our error and font
@@ -205,13 +210,14 @@ module.exports = {
       async.parallel([
         function renderActualFont (cb) {
           async.waterfall([
-            renderStyl.bind(this, actualStyl),
+            stylus.render.bind(this, styl + '\n' + charStyl),
+            saveToFile,
             screenshotFont
           ], cb);
         },
-        function renderActualFont (cb) {
+        function renderExpectedFont (cb) {
           async.waterfall([
-            renderStyl.bind(this, expectedStyl),
+            saveToFile.bind(this, expectedCss),
             screenshotFont
           ], cb);
         }
