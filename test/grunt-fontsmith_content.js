@@ -142,6 +142,7 @@ module.exports = {
   'produces multiple fonts': 'produces fonts',
   'produces fonts with proper formats': 'produces fonts',
   'produces fonts': function (done) {
+    // DEV: This is an ugly monstrosity which renders and compares every generated font
     // Load in Stylus
     var styl = fs.readFileSync(expectedDir + '/multiple/font.styl', 'utf8');
 
@@ -167,17 +168,21 @@ module.exports = {
         actualStyl = actualStyl.replace(/\s*url\("font.svg#icomoon"\) format\("svg"\);\s*/, '');
       }
 
+      // If the fontFormat is `eot`, skip this assertion as it can only be done by IE
+      if (fontFormat === 'eot') {
+        return cb();
+      }
+
       // Replace font path with our font path
       var filepath = fontFile.path,
-          filename = path.basename(filepath);
+          fontname = 'font.' + fontFormat,
           expectedCss = expectedCssObj[fontFormat];
-      actualStyl = actualStyl.replace(filename, actualDir + filepath),
-      expectedCss = expectedCss.replace(filename, expectedDir + filepath);
+      actualStyl = actualStyl.replace(fontname, actualDir + filepath),
+      expectedCss = expectedCss.replace(fontname, expectedDir + filepath);
 
       // Assert our replacements were successful
-      console.log(actualStyl);
-      assert.notEqual(actualStyl.indexOf(actualDir), -1, 'Actual stylus has not replaced "' + filename + '" with "' + actualDir + filepath + '" successfully');
-      assert.notEqual(expectedCss.indexOf(expectedDir), -1, 'Expected css has not replaced "' + filename + '" with "' + expectedDir + filepath + '" successfully');
+      assert.notEqual(actualStyl.indexOf(actualDir), -1, 'Actual stylus has not replaced "' + fontname + '" with "' + actualDir + filepath + '" successfully');
+      assert.notEqual(expectedCss.indexOf(expectedDir), -1, 'Expected css has not replaced "' + fontname + '" with "' + expectedDir + filepath + '" successfully');
 
       function saveToFile(content, cb) {
         // DEV: PhantomJS may require a .css extension for proper mime-types and whatnot
@@ -197,11 +202,11 @@ module.exports = {
             err = new Error(stderr);
           }
 
-          // If there was stdout, log it
-          if (stdout) {
-            console.log('SCREENSHOT FONT STDOUT: ', stdout);
-            fs.writeFileSync('tmp.' + options.context + '.' + fontFormat + '.png', stdout, 'base64');
-          }
+          // // If there was stdout, log it
+          // if (stdout) {
+          //   // console.log('SCREENSHOT FONT STDOUT: ', stdout);
+          //   fs.writeFileSync('tmp.' + options.context + '.' + fontFormat + '.png', stdout, 'base64');
+          // }
 
           // Callback with our error and font
           cb(err, stdout);
