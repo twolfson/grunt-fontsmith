@@ -136,65 +136,69 @@ module.exports = {
   'produces multiple fonts': 'produces fonts',
   'produces fonts with proper formats': 'produces fonts',
   'produces fonts': function (done) {
-    // Load in Stylus and save reference to this
-    var styl = fs.readFileSync(expectedDir + '/multiple/font.styl', 'utf8'),
-        that = this;
+    // Load in Stylus
+    var styl = fs.readFileSync(expectedDir + '/multiple/font.styl', 'utf8');
 
-    // Replace font path with our font path
-    // TODO: Pretty sure this is a multi-css generation on a per-font basis =(
-    var fontFile = this.fontFiles[0];
-    styl = styl.replace('font.svg', actualDir + fontFile.path);
+    // Iterate over the fontFiles
+    var fontFiles = this.fontFiles;
+    async.forEach(fontFiles, function compareFontFile (fontFile, cb) {
+      // Remove unused font formats
+      var fontFormat = fontFile.format;
+      if (fontFormat !== 'eot') {
+        styl = styl.replace(/\s+src:url\("font.eot"\);/, '');
+        styl = styl.replace(/\s*url\("font.eot\?#iefix"\) format\("embedded-opentype"\),\s*/, '');
+      }
+      if (fontFormat !== 'woff') {
+        styl = styl.replace(/\s*url\("font.woff"\) format\("woff"\),\s*/, '');
+      }
+      if (fontFormat !== 'woff') {
+        styl = styl.replace(/\s*url\("font.ttf"\) format\("truetype"\),\s*/, '');
+      }
+      if (fontFormat !== 'svg') {
+        // Guarantee no-commas for font formats
+        styl = styl.replace(',', ';');
+        styl = styl.replace(/\s*url\("font.svg#icomoon"\) format\("svg"\);\s*/, '');
+      }
 
-    // Remove unused font formats
-    var fontFormat = fontFile.format;
-    if (fontFormat !== 'eot') {
-      styl = styl.replace(/\s+src:url\("font.eot"\);/, '');
-      styl = styl.replace(/\s*url\("font.eot\?#iefix"\) format\("embedded-opentype"\),\s*/, '');
-    }
-    if (fontFormat !== 'woff') {
-      styl = styl.replace(/\s*url\("font.woff"\) format\("woff"\),\s*/, '');
-    }
-    if (fontFormat !== 'woff') {
-      styl = styl.replace(/\s*url\("font.ttf"\) format\("truetype"\),\s*/, '');
-    }
-    if (fontFormat !== 'svg') {
-      // Guarantee no-commas for font formats
-      styl = styl.replace(',', ';');
-      styl = styl.replace(/\s*url\("font.svg#icomoon"\) format\("svg"\);\s*/, '');
-    }
+      // TODO: For expected, use hard-coded stylsheets to verify .replace is working sanely
 
-    // Compile our CSS
-    stylus.render(styl + '\n' + charStyl, function (err, css) {
-      // If there is an error, callback with it
-      if (err) { return done(err); }
+      // Replace font path with our font path
+      var filename = path.basename(fontFile);
+      styl = styl.replace(filename, actualDir + fontFile.path);
 
-      // DEV: PhantomJS may require a .css extension for proper mime-types and whatnot
-      // Save css to a temporary file
-      var tmpFile = new TempFile();
-      tmpFile.writeFileSync(css, 'utf8');
+      // Compile our CSS
+      stylus.render(styl + '\n' + charStyl, function (err, css) {
+        // If there is an error, callback with it
+        if (err) { return cb(err); }
 
-      // Save a reference to the file path
-      var cssPath = tmpFile.path;
-      console.log(cssPath);
+        // DEV: PhantomJS may require a .css extension for proper mime-types and whatnot
+        // Save css to a temporary file
+        var tmpFile = new TempFile();
+        tmpFile.writeFileSync(css, 'utf8');
 
-      // Screenshot the font in use
-      exec('phantomjs test_scripts/screenshot_font.js ' + cssPath, function (err, stdout, stderr) {
-        // Fallback error with stderr
-        if (!err && stderr) {
-          err = new Error(stderr);
-        }
+        // Save a reference to the file path
+        var cssPath = tmpFile.path;
 
-        // If there was stdout, log it
-        if (stdout) {
-          console.log('SCREENSHOT FONT STDOUT: ', stdout);
-          fs.writeFileSync('tmp.png', stdout, 'base64');
-        }
+        // Screenshot the font in use
+        exec('phantomjs test_scripts/screenshot_font.js ' + cssPath, function (err, stdout, stderr) {
+          // Fallback error with stderr
+          if (!err && stderr) {
+            err = new Error(stderr);
+          }
 
-        // Callback with our error
-        done(err);
+          // If there was stdout, log it
+          if (stdout) {
+            console.log('SCREENSHOT FONT STDOUT: ', stdout);
+            fs.writeFileSync('tmp.png', stdout, 'base64');
+          }
 
-        // TODO: Compare fonts
+          // TODO: Compare fonts
+
+          // Callback with our error
+          cb(err);
+        });
       });
-    });
+    }, done);
+
   }
 };
