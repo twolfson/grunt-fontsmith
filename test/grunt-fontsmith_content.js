@@ -4,7 +4,8 @@ var fs = require('fs'),
     exec = require('child_process').exec,
     assert = require('assert'),
     async = require('async'),
-    stylus = require('stylus');
+    stylus = require('stylus'),
+    TempFile = require('temporary/lib/file');
 
 // Clean up actual_files/
 var actualDir = __dirname + '/actual_files/',
@@ -132,12 +133,22 @@ module.exports = {
 
   // Font assertions
   'produces a font': [function (done) {
-    var styl = fs.readFileSync(expectedDir + '/multiple/font.styl', 'utf8');
+    // TODO: Inject full font path into CSS
+    // Load in Stylus and save reference to this
+    var styl = fs.readFileSync(expectedDir + '/multiple/font.styl', 'utf8'),
+        that = this;
+
+    // Compile our CSS
     stylus.render(styl + '\n' + charStyl, function (err, css) {
-      // TODO: Save this and embrace doubleshot modularity
-      console.log(css, 'yyz');
-      // TODO: Generate tmpfile
-      // TODO: Write CSS to tmpfile
+      // DEV: PhantomJS may require a .css extension for proper mime-types and whatnot
+      // Save css to a temporary file
+      var tmpFile = new TempFile();
+      tmpFile.writeFileSync(css, 'utf8');
+
+      // Save a reference to the file path
+      that.cssPath = tmpFile.path;
+
+      // Callback with the error
       done(err);
     });
   }, 'produces fonts'],
@@ -158,32 +169,32 @@ module.exports = {
 
     // Assert each of the fonts match as expected
     // TODO: Deal with being offline and needing async
-    async.forEach(this.fontFiles, function testFont (font, cb) {
-      // In parallel, screenshot actual font vs expected font
-      var actualPath = path.join(actualDir, font.path),
-          expectedPath = path.join(expectedDir, font.path);
-      async.map([actualPath, expectedPath], function screenshotFont (filepath, cb) {
-        exec('phantomjs test_scripts/screenshot_font.js ' + filepath + ' ' + font.format, function (err, stdout, stderr) {
-          // Fallback error with stderr
-          if (!err && stderr) {
-            err = new Error(stderr);
-          }
+    // async.forEach(this.fontFiles, function testFont (font, cb) {
+    //   // In parallel, screenshot actual font vs expected font
+    //   var actualPath = path.join(actualDir, font.path),
+    //       expectedPath = path.join(expectedDir, font.path);
+    //   async.map([actualPath, expectedPath], function screenshotFont (filepath, cb) {
+    exec('phantomjs test_scripts/screenshot_font.js ' + this.cssPath, function (err, stdout, stderr) {
+      // Fallback error with stderr
+      if (!err && stderr) {
+        err = new Error(stderr);
+      }
 
-          // If there was stdout, log it
-          if (stdout) {
-            console.log('SCREENSHOT FONT STDOUT: ', stdout);
-          }
+      // If there was stdout, log it
+      if (stdout) {
+        console.log('SCREENSHOT FONT STDOUT: ', stdout);
+      }
 
-          // Callback with our error
-          cb(err);
-        });
-      }, function compareScreenshots (err, screenshots) {
-        // If there was an error, callback with it
-        if (err) { return cb(err); }
+      // Callback with our error
+      done(err);
+    });
+      // }, function compareScreenshots (err, screenshots) {
+      //   // If there was an error, callback with it
+      //   if (err) { return cb(err); }
 
-        // Compare the generated screenshots
-        // TODO: Might need to use imagemagick to compare images?
-      });
-    }, done);
+      //   // Compare the generated screenshots
+      //   // TODO: Might need to use imagemagick to compare images?
+      // });
+    // }, done);
   }
 };
