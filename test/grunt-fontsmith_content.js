@@ -149,38 +149,39 @@ module.exports = {
     var fontFiles = this.fontFiles;
     async.forEach(fontFiles, function compareFontFile (fontFile, cb) {
       // Remove unused font formats
-      var fontFormat = fontFile.format;
+      var fontFormat = fontFile.format,
+          actualStyl = styl;
       if (fontFormat !== 'eot') {
-        styl = styl.replace(/\s+src:url\("font.eot"\);/, '');
-        styl = styl.replace(/\s*url\("font.eot\?#iefix"\) format\("embedded-opentype"\),\s*/, '');
+        actualStyl = actualStyl.replace(/\s+src:url\("font.eot"\);/, '');
+        actualStyl = actualStyl.replace(/\s*url\("font.eot\?#iefix"\) format\("embedded-opentype"\),\s*/, '');
       }
       if (fontFormat !== 'woff') {
-        styl = styl.replace(/\s*url\("font.woff"\) format\("woff"\),\s*/, '');
+        actualStyl = actualStyl.replace(/\s*url\("font.woff"\) format\("woff"\),\s*/, '');
       }
-      if (fontFormat !== 'woff') {
-        styl = styl.replace(/\s*url\("font.ttf"\) format\("truetype"\),\s*/, '');
+      if (fontFormat !== 'ttf') {
+        actualStyl = actualStyl.replace(/\s*url\("font.ttf"\) format\("truetype"\),\s*/, '');
       }
       if (fontFormat !== 'svg') {
         // Guarantee no-commas for font formats
-        styl = styl.replace(',', ';');
-        styl = styl.replace(/\s*url\("font.svg#icomoon"\) format\("svg"\);\s*/, '');
+        actualStyl = actualStyl.replace(',', ';');
+        actualStyl = actualStyl.replace(/\s*url\("font.svg#icomoon"\) format\("svg"\);\s*/, '');
       }
 
       // Replace font path with our font path
       var filepath = fontFile.path,
-          filename = path.basename(filepath),
-          actualStyl = styl.replace(filename, actualDir + fontFile.path),
+          filename = path.basename(filepath);
           expectedCss = expectedCssObj[fontFormat];
-      expectedCss = expectedCss.replace(filename, expectedDir + fontFile.path);
+      actualStyl = actualStyl.replace(filename, actualDir + filepath),
+      expectedCss = expectedCss.replace(filename, expectedDir + filepath);
 
       // Assert our replacements were successful
-      assert.notEqual(actualStyl.indexOf(actualDir), -1);
-      assert.notEqual(expectedCss.indexOf(expectedDir), -1);
+      console.log(actualStyl);
+      assert.notEqual(actualStyl.indexOf(actualDir), -1, 'Actual stylus has not replaced "' + filename + '" with "' + actualDir + filepath + '" successfully');
+      assert.notEqual(expectedCss.indexOf(expectedDir), -1, 'Expected css has not replaced "' + filename + '" with "' + expectedDir + filepath + '" successfully');
 
       function saveToFile(content, cb) {
         // DEV: PhantomJS may require a .css extension for proper mime-types and whatnot
         // Save css to a temporary file
-        console.log(content);
         var tmpFile = new TempFile();
         tmpFile.writeFileSync(content, 'utf8');
 
