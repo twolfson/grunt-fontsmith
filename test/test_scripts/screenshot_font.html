@@ -1,1 +1,18 @@
-hey
+<!doctype html>
+<html>
+<head>
+  <script>
+    // Dynamically inject CSS
+    var encodedCssURI = window.location.search.slice(1),
+        cssURI = decodeURIComponent(encodedCssURI);
+
+    // ANTI-PATTERN: Load CSS synchronously via document.write
+    document.write('<link href="file://' + cssURI + '" type="text/css" rel="stylesheet"/>');
+  </script>
+</head>
+<body>
+  <span class="icon-eye"></span>
+  <span class="icon-building_block"></span>
+  <span class="icon-moon"></span>
+</body>
+</html>

@@ -8,10 +8,8 @@ var args = phantom.args,
 
 // Open a webpage with our CSS
 var page = webpage.create(),
-    __dirname =
-page.open(__dirname + '/screenshot_font.html', function (status) {
-  // TODO: Add in font characters
-
+    cssURI = encodeURIComponent(cssPath);
+page.open(__dirname + '/screenshot_font.html?' + cssURI, function (status) {
   // Take a screenshot of the content
   var screenshot = page.renderBase64('png');
   console.log(screenshot);
