@@ -132,73 +132,69 @@ module.exports = {
   },
 
   // Font assertions
-  'produces a font': [function (done) {
+  'produces a font': 'produces fonts',
+  'produces multiple fonts': 'produces fonts',
+  'produces fonts with proper formats': 'produces fonts',
+  'produces fonts': function (done) {
     // Load in Stylus and save reference to this
     var styl = fs.readFileSync(expectedDir + '/multiple/font.styl', 'utf8'),
         that = this;
 
     // Replace font path with our font path
     // TODO: Pretty sure this is a multi-css generation on a per-font basis =(
-    styl = styl.replace('font.svg', actualDir + this.fontFiles[0].path);
+    var fontFile = this.fontFiles[0];
+    styl = styl.replace('font.svg', actualDir + fontFile.path);
+
+    // Remove unused font formats
+    var fontFormat = fontFile.format;
+    if (fontFormat !== 'eot') {
+      styl = styl.replace(/\s+src:url\("font.eot"\);/, '');
+      styl = styl.replace(/\s*url\("font.eot\?#iefix"\) format\("embedded-opentype"\),\s*/, '');
+    }
+    if (fontFormat !== 'woff') {
+      styl = styl.replace(/\s*url\("font.woff"\) format\("woff"\),\s*/, '');
+    }
+    if (fontFormat !== 'woff') {
+      styl = styl.replace(/\s*url\("font.ttf"\) format\("truetype"\),\s*/, '');
+    }
+    if (fontFormat !== 'svg') {
+      // Guarantee no-commas for font formats
+      styl = styl.replace(',', ';');
+      styl = styl.replace(/\s*url\("font.svg#icomoon"\) format\("svg"\);\s*/, '');
+    }
 
     // Compile our CSS
     stylus.render(styl + '\n' + charStyl, function (err, css) {
+      // If there is an error, callback with it
+      if (err) { return done(err); }
+
       // DEV: PhantomJS may require a .css extension for proper mime-types and whatnot
       // Save css to a temporary file
       var tmpFile = new TempFile();
       tmpFile.writeFileSync(css, 'utf8');
 
       // Save a reference to the file path
-      that.cssPath = tmpFile.path;
+      var cssPath = tmpFile.path;
+      console.log(cssPath);
 
-      // Callback with the error
-      done(err);
+      // Screenshot the font in use
+      exec('phantomjs test_scripts/screenshot_font.js ' + cssPath, function (err, stdout, stderr) {
+        // Fallback error with stderr
+        if (!err && stderr) {
+          err = new Error(stderr);
+        }
+
+        // If there was stdout, log it
+        if (stdout) {
+          console.log('SCREENSHOT FONT STDOUT: ', stdout);
+          fs.writeFileSync('tmp.png', stdout, 'base64');
+        }
+
+        // Callback with our error
+        done(err);
+
+        // TODO: Compare fonts
+      });
     });
-  }, 'produces fonts'],
-  'produces multiple fonts': 'produces fonts',
-  'produces fonts with proper formats': 'produces fonts',
-  'produces fonts': function (done) {
-    // TODO: Latest gameplan
-    // In each of the one-off prep cases, generate the Stylus/JSON/whatever to CSS
-    // Save the CSS to a temporary file
-    // Do the same pre-emptively for the expected fonts
-    // Tell phantomjs where to load the font from
-    // Screenshot the sets of CSS
-
-    // TODO: The font-family definition will likely be wrong (too much excess)
-    // so we might need to take on a hybrid approach here
-    // either replace the font-family block
-    // or replace it programatically in the CSS language (e.g. in Stylus)
-
-    // Assert each of the fonts match as expected
-    // TODO: Deal with being offline and needing async
-    // async.forEach(this.fontFiles, function testFont (font, cb) {
-    //   // In parallel, screenshot actual font vs expected font
-    //   var actualPath = path.join(actualDir, font.path),
-    //       expectedPath = path.join(expectedDir, font.path);
-    //   async.map([actualPath, expectedPath], function screenshotFont (filepath, cb) {
-    exec('phantomjs test_scripts/screenshot_font.js ' + this.cssPath, function (err, stdout, stderr) {
-      // Fallback error with stderr
-      if (!err && stderr) {
-        err = new Error(stderr);
-      }
-
-      // If there was stdout, log it
-      if (stdout) {
-        console.log('SCREENSHOT FONT STDOUT: ', stdout);
-        fs.writeFileSync('tmp.png', stdout, 'base64');
-      }
-
-      // Callback with our error
-      done(err);
-    });
-      // }, function compareScreenshots (err, screenshots) {
-      //   // If there was an error, callback with it
-      //   if (err) { return cb(err); }
-
-      //   // Compare the generated screenshots
-      //   // TODO: Might need to use imagemagick to compare images?
-      // });
-    // }, done);
   }
 };
