@@ -1,6 +1,8 @@
 # grunt-fontsmith
 
-Grunt plugin for composing SVGs into multiple fonts, a character mapping, and CSS variables
+Grunt plugin for composing SVGs into multiple fonts, a character mapping, and CSS variables.
+
+The use case for this was to have a synchronized and automatically generated variable set between HTML character entities (e.g. `&#e002;`), CSS variables (e.g. `content: '\e002';), and fonts.
 
 ## Getting Started
 Install this grunt plugin via `npm install grunt-fontsmith` and add it to your `gruntfile`:
@@ -21,7 +23,6 @@ This requires installing [phantomjs][phantomjs] and having it accessible from yo
 [phantomjs]: http://www.phantomjs.org/
 
 ## Usage
-TODO: Document multiple CSS engine and API changes
 
 ```js
 grunt.initConfig({
