@@ -10,12 +10,11 @@ var args = phantom.args,
 var page = webpage.create(),
     __dirname =
 page.open(__dirname + '/screenshot_font.html', function (status) {
-  console.log(status);
-  // Add in characters showcasing our font
+  // TODO: Add in font characters
 
   // Take a screenshot of the content
   var screenshot = page.renderBase64('png');
-  console.log(screenshot, 'yy');
+  console.log(screenshot);
 
   // Exit the program
   phantom.exit(0);

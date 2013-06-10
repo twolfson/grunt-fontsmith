@@ -1,3 +1,4 @@
 node_modules/
 test/actual_files/
 test/tmp.json
+test/tmp.png

@@ -183,6 +183,7 @@ module.exports = {
       // If there was stdout, log it
       if (stdout) {
         console.log('SCREENSHOT FONT STDOUT: ', stdout);
+        fs.writeFileSync('tmp.png', stdout, 'base64');
       }
 
       // Callback with our error
