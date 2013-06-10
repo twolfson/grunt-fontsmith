@@ -35,6 +35,7 @@ module.exports = {
   // Fixture setups
   'A set of SVGs': function () {},
   'processed into a single font and stylesheet': [function () {
+    console.log('uh');
     this.task = 'single';
     this.cssFiles = ['single/font.styl'];
     this.fontFiles = [{
@@ -132,12 +133,12 @@ module.exports = {
 
   // Font assertions
   'produces a font': [function (done) {
-    var styl = fs.readFileSync(actualDir + '/multiple/font.styl', 'utf8');
-    console.log('hey');
-    stylus.render(styl + '\n' + charStyl, function (err, css) {
+    var styl = fs.readFileSync(expectedDir + '/multiple/font.styl', 'utf8');
+    stylus.render(styl, function (err, css) {
+    // stylus.render(styl + '\n' + charStyl, function (err, css) {
       // TODO: Save this and embrace doubleshot modularity
-      console.log(css);
-      console.log('yyz');
+      // console.log(css, 'nom', err);
+      console.log(css, 'yyz');
       // TODO: Generate tmpfile
       // TODO: Write CSS to tmpfile
       done(err);
@@ -146,6 +147,7 @@ module.exports = {
   'produces multiple fonts': 'produces fonts',
   'produces fonts with proper formats': 'produces fonts',
   'produces fonts': function (done) {
+    console.log('oh hai', this.fontFiles);
     // TODO: Latest gameplan
     // In each of the one-off prep cases, generate the Stylus/JSON/whatever to CSS
     // Save the CSS to a temporary file
