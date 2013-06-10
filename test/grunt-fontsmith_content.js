@@ -147,7 +147,7 @@ module.exports = {
   'produces multiple fonts': 'produces fonts',
   'produces fonts with proper formats': 'produces fonts',
   'produces fonts': function (done) {
-    console.log('oh hai', this.fontFiles);
+    console.log('oh hai', this);
     // TODO: Latest gameplan
     // In each of the one-off prep cases, generate the Stylus/JSON/whatever to CSS
     // Save the CSS to a temporary file
