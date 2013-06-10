@@ -180,6 +180,7 @@ module.exports = {
       function saveToFile(content, cb) {
         // DEV: PhantomJS may require a .css extension for proper mime-types and whatnot
         // Save css to a temporary file
+        console.log(content);
         var tmpFile = new TempFile();
         tmpFile.writeFileSync(content, 'utf8');
 
@@ -210,7 +211,7 @@ module.exports = {
       async.parallel([
         function renderActualFont (cb) {
           async.waterfall([
-            stylus.render.bind(this, styl + '\n' + charStyl),
+            stylus.render.bind(this, actualStyl + '\n' + charStyl),
             saveToFile,
             screenshotFont.bind(this, {context: 'actual'})
           ], cb);
