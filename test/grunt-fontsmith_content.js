@@ -163,40 +163,54 @@ module.exports = {
       // TODO: For expected, use hard-coded stylsheets to verify .replace is working sanely
 
       // Replace font path with our font path
-      var filename = path.basename(fontFile);
-      styl = styl.replace(filename, actualDir + fontFile.path);
+      var filename = path.basename(fontFile),
+          actualStyl = styl.replace(filename, actualDir + fontFile.path),
+          expectedStyl = styl.replace(filename, expectedDir + fontFile.path);
 
-      // Compile our CSS
-      stylus.render(styl + '\n' + charStyl, function (err, css) {
+      function tmp(styl, cb) {
+        // Compile our CSS
+        stylus.render(styl + '\n' + charStyl, function (err, css) {
+          // If there is an error, callback with it
+          if (err) { return cb(err); }
+
+          // DEV: PhantomJS may require a .css extension for proper mime-types and whatnot
+          // Save css to a temporary file
+          var tmpFile = new TempFile();
+          tmpFile.writeFileSync(css, 'utf8');
+
+          // Save a reference to the file path
+          var cssPath = tmpFile.path;
+
+          // Screenshot the font in use
+          exec('phantomjs test_scripts/screenshot_font.js ' + cssPath, function (err, stdout, stderr) {
+            // Fallback error with stderr
+            if (!err && stderr) {
+              err = new Error(stderr);
+            }
+
+            // If there was stdout, log it
+            if (stdout) {
+              console.log('SCREENSHOT FONT STDOUT: ', stdout);
+              fs.writeFileSync('tmp.png', stdout, 'base64');
+            }
+
+            // Callback with our error and font
+            cb(err, stdout);
+          });
+        });
+      }
+
+      // In parallel, screenshot the expected and actual font
+      async.parallel([
+        tmp.bind(this, actualStyl),
+        tmp.bind(this, expectedStyl)
+      ], function compareFonts (err, fonts) {
         // If there is an error, callback with it
         if (err) { return cb(err); }
 
-        // DEV: PhantomJS may require a .css extension for proper mime-types and whatnot
-        // Save css to a temporary file
-        var tmpFile = new TempFile();
-        tmpFile.writeFileSync(css, 'utf8');
-
-        // Save a reference to the file path
-        var cssPath = tmpFile.path;
-
-        // Screenshot the font in use
-        exec('phantomjs test_scripts/screenshot_font.js ' + cssPath, function (err, stdout, stderr) {
-          // Fallback error with stderr
-          if (!err && stderr) {
-            err = new Error(stderr);
-          }
-
-          // If there was stdout, log it
-          if (stdout) {
-            console.log('SCREENSHOT FONT STDOUT: ', stdout);
-            fs.writeFileSync('tmp.png', stdout, 'base64');
-          }
-
-          // TODO: Compare fonts
-
-          // Callback with our error
-          cb(err);
-        });
+        // Otherwise, assert the fonts are equal and callback
+        assert.strictEqual(fonts[0], fonts[1]);
+        cb();
       });
     }, done);
 
