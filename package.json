@@ -1,7 +1,7 @@
 {
   "name": "grunt-fontsmith",
   "description": "Grunt plugin for composing SVGs into multiple fonts, a character mapping, and CSS variables",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "homepage": "https://github.com/twolfson/grunt-fontsmith",
   "author": {
     "name": "Todd Wolfson",

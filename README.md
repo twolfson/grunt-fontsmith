@@ -1,4 +1,4 @@
-# grunt-fontsmith
+# grunt-fontsmith [![Donate on Gittip](http://badgr.co/gittip/twolfson.png)](https://www.gittip.com/twolfson/)
 
 Grunt plugin for composing SVGs into multiple fonts, a character mapping, and CSS variables.
 
