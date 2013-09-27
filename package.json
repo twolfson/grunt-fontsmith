@@ -32,7 +32,7 @@
     "fontsmith": "~0.2.0",
     "mustache": "~0.7.2",
     "url2": "*",
-    "json2fontcss": "~0.1.0"
+    "json2fontcss": "~0.2.0"
   },
   "_devDependencies": {
     "grunt": "~0.3.17",
