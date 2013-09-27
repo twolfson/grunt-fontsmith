@@ -65,7 +65,7 @@ grunt.initConfig({
       },
 
       // OPTIONAL: Specify CSS format (inferred from destCss' extension by default)
-          // (stylus, less, json)
+          // (stylus, less, scss, json)
       cssFormat: 'json',
 
       // Optional: Custom routing of font filepaths for CSS
