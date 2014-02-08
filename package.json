@@ -43,7 +43,7 @@
   },
   "devDependencies": {
     "grunt": "~0.4.0",
-    "doubleshot": "~1.1.1",
+    "doubleshot": "~2.13.1",
     "async": "~0.2.7",
     "stylus": "~0.32.1",
     "temporary": "0.0.5"
