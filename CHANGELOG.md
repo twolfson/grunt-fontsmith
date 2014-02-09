@@ -1,4 +1,6 @@
 # grunt-fontsmith changelog
+0.4.0 - Removed non-functional Travis CI and upgraded doubleshot for proper test exit code
+
 0.3.0 - Upgraded to `json2fontss@0.2.0`
 
 0.2.2 - Added Travis CI
