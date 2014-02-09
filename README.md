@@ -1,4 +1,4 @@
-# grunt-fontsmith [![Build status](https://travis-ci.org/twolfson/grunt-fontsmith.png?branch=master)](https://travis-ci.org/twolfson/grunt-fontsmith)
+# grunt-fontsmith
 
 Grunt plugin for composing SVGs into multiple fonts, a character mapping, and CSS variables.
 
