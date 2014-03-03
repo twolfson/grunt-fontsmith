@@ -82,7 +82,7 @@ module.exports = {
 
   'processed via grunt-fontsmith': function (done) {
     // Bump the timeout for fontsmith
-    this.timeout(10000);
+    this.timeout(60000);
 
     // Relocate to test directory
     process.chdir(__dirname);
