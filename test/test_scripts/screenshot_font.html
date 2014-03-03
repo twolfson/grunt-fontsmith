@@ -7,55 +7,8 @@
         cssURI = decodeURIComponent(encodedCssURI);
 
     // ANTI-PATTERN: Load CSS synchronously via document.write
-    // document.write('<link href="file://' + cssURI + '" type="text/css" rel="stylesheet"/>');
+    document.write('<link href="file://' + cssURI + '" type="text/css" rel="stylesheet"/>');
   </script>
-  <style>
-@font-face {
-  font-family: "fontsmith-multiple";
-  src: url("/test/actual_files/single/font.svg#icomoon") format("svg");
-  font-weight: normal;
-  font-style: normal;
-}
-.icon-eye {
-  font-family: "fontsmith-multiple";
-  speak: none;
-  font-style: normal;
-  font-weight: normal;
-  font-variant: normal;
-  text-transform: none;
-  line-height: 1;
-  -webkit-font-smoothing: antialiased;
-}
-.icon-eye:before {
-  content: "\e000";
-}
-.icon-building_block {
-  font-family: "fontsmith-multiple";
-  speak: none;
-  font-style: normal;
-  font-weight: normal;
-  font-variant: normal;
-  text-transform: none;
-  line-height: 1;
-  -webkit-font-smoothing: antialiased;
-}
-.icon-building_block:before {
-  content: "\e001";
-}
-.icon-moon {
-  font-family: "fontsmith-multiple";
-  speak: none;
-  font-style: normal;
-  font-weight: normal;
-  font-variant: normal;
-  text-transform: none;
-  line-height: 1;
-  -webkit-font-smoothing: antialiased;
-}
-.icon-moon:before {
-  content: "\e002";
-}
-  </style>
 </head>
 <body>
   <span class="icon-eye"></span>

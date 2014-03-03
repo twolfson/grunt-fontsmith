@@ -89,7 +89,6 @@ module.exports = {
 
     // Execute the cmd and task combination
     var that = this;
-    console.log('wat');
     exec('grunt font:' + this.task, function (err, stdout, stderr) {
       // If there was an error, show me the output
       if (err) {
@@ -103,7 +102,7 @@ module.exports = {
 
       // Save results for later
       that.stdout = stdout;
-      console.log('hai');
+      // console.log(stdout);
 
       // Callback
       done(err);
