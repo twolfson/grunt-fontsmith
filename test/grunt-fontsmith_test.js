@@ -1,3 +1,6 @@
+var expect = require('chai').expect;
+var fsUtils = require('./utils/fs');
+
 function runGruntTask(task) {
   before(function (done) {
     // Bump the timeout for fontsmith
@@ -31,28 +34,14 @@ function runGruntTask(task) {
 
 describe('A set of SVGs', function () {
   describe('processed into a single font and stylesheet', function () {
-    runGruntTask('font:single');
-    // this.cssFiles = ['single/font.styl'];
-    // this.fontFiles = [{
+    // TODO: Re-enable runGruntTask, it is disabled for faster dev
+    // runGruntTask('font:single');
+    fsUtils.loadActualLines(__dirname + '/actual_files/single/font.styl');
+    fsUtils.loadExpectedLines(__dirname + '/expected_files/single/font.styl');
+    // screenshotUtils.saveActualFont({
     //   path: 'single/font.svg',
     //   format: 'svg'
-    // }];
-    // TODO: Expand into namespace or object
-      // // Assert each of the CSS files exist
-      // this.cssFiles.forEach(function (filename) {
-      //   // Grab the expected and actual content
-      //   var expectedContent = fs.readFileSync(expectedDir + filename, 'utf8'),
-      //       actualContent = fs.readFileSync(actualDir + filename, 'utf8');
-
-      //   // Break down the content into separate lines
-      //   var expectedLines = expectedContent.split('\n'),
-      //       actualLines = actualContent.split('\n');
-    fsUtils.loadActualLines('single/font.styl');
-    fsUtils.loadExpectedLines('single/font.styl');
-    fsUtils.screenshotActualFont({
-      path: 'single/font.svg',
-      format: 'svg'
-    });
+    // });
       // terfall([
       //       stylus.render.bind(this, actualStyl + '\n' + charStyl),
       //       saveToFile,
@@ -79,16 +68,17 @@ describe('A set of SVGs', function () {
       // });
 
 
-    it.skip('produces a stylesheet', function () {
+    it('produces a stylesheet', function () {
       // Determine how many lines are different
-      var differentLines = expectedLines.filter(function (line) {
-            return actualLines.indexOf(line) === -1;
-          });
+      var actualLines = this.actualLines;
+      var differentLines = this.expectedLines.filter(function (line) {
+        return actualLines.indexOf(line) === -1;
+      });
 
       // Assert that only the character lines are different
       // TODO: If we ever have more than 3 sprites, update
       // the tests to be explicit about how many characters are being used
-      assert(differentLines.length <= 3);
+      expect(differentLines.length).to.be.at.most(3);
     });
     it.skip('produces a font', function () {
       assert.strictEqual(fonts[0], fonts[1]);
