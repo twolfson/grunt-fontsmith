@@ -197,6 +197,7 @@ module.exports = {
 
       function screenshotFont(options, cssPath, cb) {
         // Screenshot the font in use
+        console.log(cssPath);
         exec('phantomjs test_scripts/screenshot_font.js ' + cssPath, function (err, stdout, stderr) {
           // Fallback error with stderr
           if (!err && stderr) {
