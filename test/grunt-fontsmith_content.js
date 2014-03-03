@@ -89,6 +89,7 @@ module.exports = {
 
     // Execute the cmd and task combination
     var that = this;
+    console.log('wat');
     exec('grunt font:' + this.task, function (err, stdout, stderr) {
       // If there was an error, show me the output
       if (err) {
@@ -102,7 +103,7 @@ module.exports = {
 
       // Save results for later
       that.stdout = stdout;
-      // console.log(stdout);
+      console.log('hai');
 
       // Callback
       done(err);
@@ -177,7 +178,7 @@ module.exports = {
       var filepath = fontFile.path,
           fontname = 'font.' + fontFormat,
           expectedCss = expectedCssObj[fontFormat];
-      actualStyl = actualStyl.replace(fontname, actualDir + filepath),
+      actualStyl = actualStyl.replace(fontname, actualDir + filepath);
       expectedCss = expectedCss.replace(fontname, expectedDir + filepath);
 
       // Assert our replacements were successful
@@ -202,11 +203,13 @@ module.exports = {
             err = new Error(stderr);
           }
 
-          // // If there was stdout, log it
-          // if (stdout) {
-          //   // console.log('SCREENSHOT FONT STDOUT: ', stdout);
-          //   fs.writeFileSync('tmp.' + options.context + '.' + fontFormat + '.png', stdout, 'base64');
-          // }
+          // If there was stdout, log it
+          if (stdout) {
+            console.log('SCREENSHOT FONT STDOUT: ', stdout);
+          }
+
+          // Always create screenshots for debugging
+          fs.writeFileSync('tmp.' + options.context + '.' + fontFormat + '.png', stdout, 'base64');
 
           // Callback with our error and font
           cb(err, stdout);
