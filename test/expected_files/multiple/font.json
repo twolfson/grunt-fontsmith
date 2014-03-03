@@ -2,25 +2,25 @@
     "chars": [
         {
             "name": "eye",
-            "value": "e000",
-            "fontFamily": "fontsmith-multiple"
-        },
-        {
-            "name": "building_block",
             "value": "e001",
             "fontFamily": "fontsmith-multiple"
         },
         {
-            "name": "moon",
+            "name": "building_block",
             "value": "e002",
+            "fontFamily": "fontsmith-multiple"
+        },
+        {
+            "name": "moon",
+            "value": "e000",
             "fontFamily": "fontsmith-multiple"
         }
     ],
     "fonts": {
-        "eot": "font.eot",
-        "woff": "font.woff",
+        "svg": "font.svg",
         "ttf": "font.ttf",
-        "svg": "font.svg"
+        "eot": "font.eot",
+        "woff": "font.woff"
     },
     "fontFamily": "fontsmith-multiple",
     "options": {},

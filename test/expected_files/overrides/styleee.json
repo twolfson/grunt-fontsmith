@@ -1,12 +1,12 @@
-$eye_font_family = "fontsmith-overrides";
-$eye_value = "\e000";
-$eye = "fontsmith-overrides" "\e000";
 $building_block_font_family = "fontsmith-overrides";
-$building_block_value = "\e001";
-$building_block = "fontsmith-overrides" "\e001";
+$building_block_value = "\e002";
+$building_block = "fontsmith-overrides" "\e002";
+$eye_font_family = "fontsmith-overrides";
+$eye_value = "\e001";
+$eye = "fontsmith-overrides" "\e001";
 $moon_font_family = "fontsmith-overrides";
-$moon_value = "\e002";
-$moon = "fontsmith-overrides" "\e002";
+$moon_value = "\e000";
+$moon = "fontsmith-overrides" "\e000";
 
 iconFontFamily($char) {
   font-family: $char[0];
