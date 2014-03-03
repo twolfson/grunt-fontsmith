@@ -177,7 +177,7 @@ module.exports = {
       var filepath = fontFile.path,
           fontname = 'font.' + fontFormat,
           expectedCss = expectedCssObj[fontFormat];
-      actualStyl = actualStyl.replace(fontname, actualDir + filepath),
+      actualStyl = actualStyl.replace(fontname, actualDir + filepath);
       expectedCss = expectedCss.replace(fontname, expectedDir + filepath);
 
       // Assert our replacements were successful
