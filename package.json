@@ -26,7 +26,7 @@
     "node": ">= 0.8.0"
   },
   "scripts": {
-    "test": "doubleshot"
+    "test": "mocha"
   },
   "dependencies": {
     "fontsmith": "~0.2.0",
