@@ -1,6 +1,7 @@
 var fs = require('fs');
 var exec = require('child_process').exec;
 var expect = require('chai').expect;
+var rimraf = require('rimraf');
 var shellQuote = require('shell-quote').quote;
 var cssUtils = require('./utils/css');
 var fsUtils = require('./utils/fs');
@@ -36,6 +37,11 @@ function runGruntTask(task) {
     });
   });
 }
+
+// Clean up actual directory
+before(function cleanActualFiles (done) {
+  rimraf(__dirname + '/actual_files/', done);
+});
 
 describe('A set of SVGs', function () {
   describe('processed into a single font and stylesheet', function () {

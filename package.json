@@ -51,7 +51,8 @@
     "chai": "~1.9.0",
     "mocha": "~1.17.1",
     "tmp": "0.0.23",
-    "image-diff": "~1.0.1"
+    "image-diff": "~1.0.1",
+    "rimraf": "~2.2.6"
   },
   "optionalDependencies": {},
   "keywords": [
