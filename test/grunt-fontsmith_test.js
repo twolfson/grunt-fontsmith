@@ -39,16 +39,14 @@ function runGruntTask(task) {
 }
 
 // Clean up actual directory
-// TODO: Re-enable this
-// before(function cleanActualFiles (done) {
-//   rimraf(__dirname + '/actual_files/', done);
-// });
+before(function cleanActualFiles (done) {
+  rimraf(__dirname + '/actual_files/', done);
+});
 
 describe('A set of SVGs', function () {
   describe('processed into a single font and stylesheet', function () {
     // Run our grunt task
-    // TODO: Re-enable this
-    // runGruntTask('font:single');
+    runGruntTask('font:single');
 
     // Compare CSS
     fsUtils.loadActualLines(__dirname + '/actual_files/single/font.styl');
@@ -89,8 +87,7 @@ describe('A set of SVGs', function () {
 
   describe('processed into multiple fonts and stylesheets', function () {
     // Run our grunt task
-    // TODO: Re-enable this
-    // runGruntTask('font:multiple');
+    runGruntTask('font:multiple');
 
     // Compare Stylus and JSON
     fsUtils.loadActualLines(__dirname + '/actual_files/multiple/font.styl');
@@ -149,8 +146,7 @@ describe('A set of SVGs', function () {
 
   describe('processed into overridden fonts and stylesheets', function () {
     // Run our grunt task
-    // TODO: Re-enable this
-    // runGruntTask('font:overrides');
+    runGruntTask('font:overrides');
 
     // Compare Stylus and JSON
     fsUtils.loadActualLines(__dirname + '/actual_files/overrides/jason.less');
