@@ -51,12 +51,6 @@ describe('A set of SVGs', function () {
     // });
     before(function generateStylus (done) {
       // Define and load Stylus to work with
-      var expectedCssObj = {
-        eot: fs.readFileSync(__dirname + '/test_files/font.eot.css', 'utf8'),
-        svg: fs.readFileSync(__dirname + '/test_files/font.svg.css', 'utf8'),
-        ttf: fs.readFileSync(__dirname + '/test_files/font.ttf.css', 'utf8'),
-        woff: fs.readFileSync(__dirname + '/test_files/font.woff.css', 'utf8')
-      };
       var charStyl = [
         '.icon-eye',
         '  icon($eye)',
@@ -91,13 +85,19 @@ describe('A set of SVGs', function () {
       var actualDir = __dirname + '/actual_files/';
       var filepath = 'single/font.svg';
       var fontname = 'font.' + fontFormat;
-      var expectedCss = expectedCssObj[fontFormat];
       actualStyl = actualStyl.replace(fontname,  actualDir + filepath);
 
       // Assert our replacements were successful
       expect(actualStyl).to.contain(actualDir, 'Actual stylus has not replaced "' + fontname + '" with "' + actualDir + filepath + '" successfully');
       // TODO: Perform in separate screenshot action
       // var expectedDir = __dirname + '/expected_files';
+      // var expectedCssObj = {
+      //   eot: fs.readFileSync(__dirname + '/test_files/font.eot.css', 'utf8'),
+      //   svg: fs.readFileSync(__dirname + '/test_files/font.svg.css', 'utf8'),
+      //   ttf: fs.readFileSync(__dirname + '/test_files/font.ttf.css', 'utf8'),
+      //   woff: fs.readFileSync(__dirname + '/test_files/font.woff.css', 'utf8')
+      // };
+      // var expectedCss = expectedCssObj[fontFormat];
       // expectedCss = expectedCss.replace(fontname, expectedDir + filepath);
       // expect(expectedCss).to.contain(expectedDir, 'Expected css has not replaced "' + fontname + '" with "' + expectedDir + filepath + '" successfully');
 
