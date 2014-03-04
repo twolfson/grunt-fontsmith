@@ -40,8 +40,7 @@ exports._compileCss = function (options) {
   css = css.replace(fontname,  fontFilepath);
 
   // Assert our replacements were successful
-  // TOOD: Should we assert commas are gone?
-  // expect(css).to.not.contain(',');
+  expect(css).to.not.contain(',');
   expect(css).to.contain(fontFilepath, '`compileCss` has not replaced "' + fontname + '" with "' + fontFilepath + '" successfully');
 
   // Return the css

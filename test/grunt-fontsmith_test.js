@@ -38,6 +38,8 @@ function runGruntTask(task) {
   });
 }
 
+// DEV: If you want to develop against this, disable the `rimraf` and `runGruntTask's`
+
 // Clean up actual directory
 before(function cleanActualFiles (done) {
   rimraf(__dirname + '/actual_files/', done);
