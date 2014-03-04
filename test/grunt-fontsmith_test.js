@@ -39,14 +39,16 @@ function runGruntTask(task) {
 }
 
 // Clean up actual directory
-before(function cleanActualFiles (done) {
-  rimraf(__dirname + '/actual_files/', done);
-});
+// TODO: Re-enable this
+// before(function cleanActualFiles (done) {
+//   rimraf(__dirname + '/actual_files/', done);
+// });
 
 describe('A set of SVGs', function () {
   describe('processed into a single font and stylesheet', function () {
     // Run our grunt task
-    runGruntTask('font:single');
+    // TODO: Re-enable this
+    // runGruntTask('font:single');
 
     // Compare CSS
     fsUtils.loadActualLines(__dirname + '/actual_files/single/font.styl');
@@ -59,8 +61,6 @@ describe('A set of SVGs', function () {
       });
 
       // Assert that only the character lines are different
-      // TODO: If we ever have more than 3 sprites, update
-      // the tests to be explicit about how many characters are being used
       expect(differentLines.length).to.be.at.most(3);
     });
 
@@ -87,12 +87,60 @@ describe('A set of SVGs', function () {
     });
   });
 
-  describe('processed into multiple fonts and stylesheets', function () {
-    it.skip('produces multiple stylesheets', function () {
+  describe.only('processed into multiple fonts and stylesheets', function () {
+    // Run our grunt task
+    // runGruntTask('font:multiple');
 
+    // Compare Stylus and JSON
+    fsUtils.loadActualLines(__dirname + '/actual_files/multiple/font.styl');
+    fsUtils.loadExpectedLines(__dirname + '/expected_files/multiple/font.styl');
+    it('produces a Stylus stylesheet', function () {
+      // Determine how many lines are different
+      var actualLines = this.actualLines;
+      var differentLines = this.expectedLines.filter(function (line) {
+        return actualLines.indexOf(line) === -1;
+      });
+
+      // Assert that only the character lines are different
+      expect(differentLines.length).to.be.at.most(3);
     });
-    it.skip('produces multiple fonts', function () {
+    fsUtils.loadActualLines(__dirname + '/actual_files/multiple/font.json');
+    fsUtils.loadExpectedLines(__dirname + '/expected_files/multiple/font.json');
+    it('produces a JSON stylesheet', function () {
+      // Determine how many lines are different
+      var actualLines = this.actualLines;
+      var differentLines = this.expectedLines.filter(function (line) {
+        return actualLines.indexOf(line) === -1;
+      });
 
+      // Assert that only the character lines are different
+      expect(differentLines.length).to.be.at.most(3);
+    });
+
+    // Generate actual and expected screenshots
+    // DEV: This is an anti-pattern since it destroys our stack trace
+    ['svg'].forEach(function (fontFormat) {
+    // ['svg', 'ttf', 'eot', 'woff'].forEach(function (fontFormat) {
+      imageUtils.screenshotStylus({
+        cssFilepath: __dirname + '/actual_files/multiple/font.styl',
+        fontFilepath: __dirname + '/actual_files/multiple/font.svg',
+        fontFormat: 'svg',
+        screenshotPath: __dirname + '/actual_files/multiple/actual.png'
+      });
+      imageUtils.screenshotStylus({
+        cssFilepath: __dirname + '/expected_files/multiple/font.styl',
+        fontFilepath: __dirname + '/expected_files/multiple/font.svg',
+        fontFormat: 'svg',
+        screenshotPath: __dirname + '/actual_files/multiple/expected.png'
+      });
+      imageUtils.diff({
+        actualImage: __dirname + '/actual_files/multiple/actual.png',
+        expectedImage: __dirname + '/actual_files/multiple/expected.png',
+        diffImage: __dirname + '/actual_files/multiple/diff.png'
+      });
+      it('produces a font', function () {
+        expect(this.imagesAreSame).to.equal(true);
+      });
     });
   });
 
