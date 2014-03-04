@@ -1,7 +1,9 @@
 # grunt-fontsmith changelog
+0.7.0 - Upgraded to `fontsmith@0.4.0` to pick up `icomoon-phantomjs@0.4.0` debug screenshot and failed upload messaging
+
 0.6.1 - Removed old code from doubleshot tests
 
-0.6.0 - Upgraded `fontsmith` to pick up `icomoon-phantomjs` timeouts
+0.6.0 - Upgraded to `fontsmith@0.3.0` to pick up `icomoon-phantomjs@0.3.0` timeouts
 
 0.5.1 - Added Travis CI badge to README
 
