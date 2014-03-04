@@ -28,7 +28,7 @@ exports._compileCss = function (options) {
     // Guarantee no-commas for font formats
     var svgName = fontNames.svgName || 'font.svg';
     css = css.replace(',', ';');
-    css = css.replace(new RegExp('\\s*url\\("' + svgName + '#icomoon"\\) format\\("svg"\\);\\s*/', 'g'), '');
+    css = css.replace(new RegExp('\\s*url\\("' + svgName + '#icomoon"\\) format\\("svg"\\);\\s*', 'g'), '');
     expect(css).to.not.contain(svgName);
   }
 
