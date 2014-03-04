@@ -52,7 +52,8 @@
     "mocha": "~1.17.1",
     "tmp": "0.0.23",
     "image-diff": "~1.0.1",
-    "rimraf": "~2.2.6"
+    "rimraf": "~2.2.6",
+    "grunt-cli": "~0.1.13"
   },
   "optionalDependencies": {},
   "keywords": [
