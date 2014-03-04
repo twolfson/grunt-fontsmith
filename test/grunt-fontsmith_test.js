@@ -178,33 +178,39 @@ describe('A set of SVGs', function () {
       expect(differentLines.length).to.be.at.most(3);
     });
 
-    // // Generate actual and expected screenshots
-    // // DEV: This is an anti-pattern since it destroys our stack trace
-    // // DEV: PhantomJS does not support testing of `eot` so this only validates CSS
-    // ['svg', 'ttf', 'eot', 'woff'].forEach(function (fontFormat) {
-    //   describe('when rendering on a ' + fontFormat + ' supported browser', function () {
-    //     imageUtils.screenshotStylus({
-    //       cssFilepath: __dirname + '/actual_files/multiple/font.styl',
-    //       fontFilepath: __dirname + '/actual_files/multiple/font.' + fontFormat,
-    //       fontFormat: fontFormat,
-    //       screenshotPath: __dirname + '/actual_files/multiple/actual.' + fontFormat + '.png'
-    //     });
-    //     imageUtils.screenshotStylus({
-    //       cssFilepath: __dirname + '/expected_files/multiple/font.styl',
-    //       fontFilepath: __dirname + '/expected_files/multiple/font.' + fontFormat,
-    //       fontFormat: fontFormat,
-    //       screenshotPath: __dirname + '/actual_files/multiple/expected.' + fontFormat + '.png'
-    //     });
-    //     imageUtils.diff({
-    //       actualImage: __dirname + '/actual_files/multiple/actual.' + fontFormat + '.png',
-    //       expectedImage: __dirname + '/actual_files/multiple/expected.' + fontFormat + '.png',
-    //       diffImage: __dirname + '/actual_files/multiple/diff.' + fontFormat + '.png'
-    //     });
-    //     it('render a(n) ' + fontFormat + ' font', function () {
-    //       expect(this.imagesAreSame).to.equal(true);
-    //     });
-    //   });
-    // });
+    // Generate actual and expected screenshots
+    // DEV: This is an anti-pattern since it destroys our stack trace
+    // DEV: PhantomJS does not support testing of `eot` so this only validates CSS
+    [{
+      filename: 'waffles.ttf',
+      format: 'woff'
+    }, {
+      filename: 'eof.svg',
+      format: 'eot'
+    }].forEach(function (font) {
+      describe('when rendering on a ' + font.format + ' supported browser', function () {
+        imageUtils.screenshotStylus({
+          cssFilepath: __dirname + '/actual_files/overrides/styleee.json',
+          fontFilepath: __dirname + '/actual_files/overrides/' + font.filename,
+          fontFormat: font.format,
+          screenshotPath: __dirname + '/actual_files/overrides/actual.' + font.filename + '.png'
+        });
+        imageUtils.screenshotStylus({
+          cssFilepath: __dirname + '/expected_files/overrides/styleee.json',
+          fontFilepath: __dirname + '/expected_files/overrides/font.' + font.filename,
+          fontFormat: font.format,
+          screenshotPath: __dirname + '/actual_files/overrides/expected.' + font.filename + '.png'
+        });
+        imageUtils.diff({
+          actualImage: __dirname + '/actual_files/overrides/actual.' + font.filename + '.png',
+          expectedImage: __dirname + '/actual_files/overrides/expected.' + font.filename + '.png',
+          diffImage: __dirname + '/actual_files/overrides/diff.' + font.filename + '.png'
+        });
+        it('render a(n) ' + font.format + ' font', function () {
+          expect(this.imagesAreSame).to.equal(true);
+        });
+      });
+    });
 
     it.skip('produces stylesheets with proper formats', function () {
 
