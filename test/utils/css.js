@@ -29,7 +29,7 @@ exports._compileCss = function (options) {
   css = css.replace(fontname,  fontFilepath);
 
   // Assert our replacements were successful
-  expect(css).to.contain(fontFilepath, 'Actual stylus has not replaced "' + fontname + '" with "' + fontFilepath + '" successfully');
+  expect(css).to.contain(fontFilepath, '`compileCss` has not replaced "' + fontname + '" with "' + fontFilepath + '" successfully');
 
   // Return the css
   return css;
