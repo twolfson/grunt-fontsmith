@@ -31,8 +31,8 @@ exports.screenshotCss = function (options) {
     });
   });
   before(function screenshotCss (done) {
-    var cmd = shellQuote(['phantomjs', 'test_scripts/screenshot_font.js', cssPath, options.screenshotPath]);
-    exec(cmd, {cwd: __dirname + '/../'}, function (err, stdout, stderr) {
+    var cmd = shellQuote(['phantomjs', 'scripts/screenshot_font.js', cssPath, options.screenshotPath]);
+    exec(cmd, {cwd: __dirname}, function (err, stdout, stderr) {
       // Fallback error with stderr
       if (!err && stderr) {
         err = new Error(stderr);
