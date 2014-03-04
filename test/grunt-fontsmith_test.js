@@ -60,7 +60,7 @@ describe('A set of SVGs', function () {
     cssUtils.compileStylus({
       cssFilepath: __dirname + '/actual_files/single/font.styl',
       fontFilepath: __dirname + '/actual_files/single/font.svg',
-      format: 'svg'
+      fontFormat: 'svg'
     });
     // TODO: This screenshot is a little bit too magical by using `this.css` =(
     imageUtils.screenshotCss({
@@ -69,7 +69,7 @@ describe('A set of SVGs', function () {
     cssUtils.compileStylus({
       cssFilepath: __dirname + '/expected_files/single/font.styl',
       fontFilepath: __dirname + '/expected_files/single/font.svg',
-      format: 'svg'
+      fontFormat: 'svg'
     });
     imageUtils.screenshotCss({
       screenshotPath: __dirname + '/actual_files/single/expected.png'

@@ -5,18 +5,18 @@ var stylus = require('stylus');
 exports._compileCss = function (options) {
   // Strip out fonts that are not going to be tested
   var css = fs.readFileSync(options.cssFilepath, 'utf8');
-  var format = options.format;
-  if (format !== 'eot') {
+  var fontFormat = options.fontFormat;
+  if (fontFormat !== 'eot') {
     css = css.replace(/\s+src:url\("font.eot"\);/, '');
     css = css.replace(/\s*url\("font.eot\?#iefix"\) format\("embedded-opentype"\),\s*/, '');
   }
-  if (format !== 'woff') {
+  if (fontFormat !== 'woff') {
     css = css.replace(/\s*url\("font.woff"\) format\("woff"\),\s*/, '');
   }
-  if (format !== 'ttf') {
+  if (fontFormat !== 'ttf') {
     css = css.replace(/\s*url\("font.ttf"\) format\("truetype"\),\s*/, '');
   }
-  if (format !== 'svg') {
+  if (fontFormat !== 'svg') {
     // Guarantee no-commas for font formats
     css = css.replace(',', ';');
     css = css.replace(/\s*url\("font.svg#icomoon"\) format\("svg"\);\s*/, '');
@@ -25,7 +25,7 @@ exports._compileCss = function (options) {
   // Replace font path with our font path
   // var fontFilepath = __dirname + '/actual_files/single/font.svg';
   var fontFilepath = options.fontFilepath;
-  var fontname = 'font.' + format;
+  var fontname = 'font.' + fontFormat;
   css = css.replace(fontname,  fontFilepath);
 
   // Assert our replacements were successful
