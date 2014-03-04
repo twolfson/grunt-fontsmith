@@ -21,7 +21,7 @@ module.exports = function (grunt) {
         destFonts: {
           // Override specific engines
           woff: 'actual_files/overrides/waffles.ttf',
-          eot: 'actual_files/overrides/eof.svg'
+          svg: 'actual_files/overrides/essveegee.eot'
         }
       }
       // 'every-option': {
