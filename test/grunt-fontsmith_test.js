@@ -219,12 +219,5 @@ describe('A set of SVGs', function () {
         });
       });
     });
-
-    it.skip('produces stylesheets with proper formats', function () {
-
-    });
-    it.skip('produces fonts with proper formats', function () {
-
-    });
   });
 });
