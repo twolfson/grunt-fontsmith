@@ -1,8 +1,10 @@
-var path = require('path');
+var fs = require('fs');
+var expect = require('chai').expect;
+var stylus = require('stylus');
 
-exports.compileCss = function (options) {
+exports._compileCss = function (options) {
   // Strip out fonts that are not going to be tested
-  var css = fs.readFileSync(options.cssPath;
+  var css = fs.readFileSync(options.cssFilepath, 'utf8');
   var format = options.format;
   if (format !== 'eot') {
     css = css.replace(/\s+src:url\("font.eot"\);/, '');
@@ -21,37 +23,37 @@ exports.compileCss = function (options) {
   }
 
   // Replace font path with our font path
-  // var dir = __dirname + '/actual_files/';
-  // var filename = 'single/font.svg';
-  var dir = options.dir;
-  var filepath = path.join(dir, options.filename);
+  // var fontFilepath = __dirname + '/actual_files/single/font.svg';
+  var fontFilepath = options.fontFilepath;
   var fontname = 'font.' + format;
-  css = css.replace(fontname,  filepath);
+  css = css.replace(fontname,  fontFilepath);
 
   // Assert our replacements were successful
-  expect(css).to.contain(dir, 'Actual stylus has not replaced "' + fontname + '" with "' + filepath + '" successfully');
+  expect(css).to.contain(fontFilepath, 'Actual stylus has not replaced "' + fontname + '" with "' + fontFilepath + '" successfully');
 
   // Return the css
   return css;
 };
 
 exports.compileStylus = function (options) {
-  // Prepare the Stylus
-  var baseStyl = exports.compileCss(options);
+  before(function compileStylusFn (done) {
+    // Prepare the Stylus
+    var baseStyl = exports._compileCss(options);
 
-  // Render the stylus
-  var charStyl = [
-    '.icon-eye',
-    '  icon($eye)',
-    '.icon-building_block',
-    '  icon($building_block)',
-    '.icon-moon',
-    '  icon($moon)'
-  ].join('\n');
-  var that = this;
-  stylus.render(baseStyl + '\n' + charStyl, function (err, css) {
-    // Save the CSS for later and callback
-    that.css = css;
-    done(err);
+    // Render the stylus
+    var charStyl = [
+      '.icon-eye',
+      '  icon($eye)',
+      '.icon-building_block',
+      '  icon($building_block)',
+      '.icon-moon',
+      '  icon($moon)'
+    ].join('\n');
+    var that = this;
+    stylus.render(baseStyl + '\n' + charStyl, function (err, css) {
+      // Save the CSS for later and callback
+      that.css = css;
+      done(err);
+    });
   });
 };
