@@ -1,5 +1,7 @@
 var fs = require('fs');
+var exec = require('child_process').exec;
 var expect = require('chai').expect;
+var shellQuote = require('shell-quote').quote;
 var cssUtils = require('./utils/css');
 var fsUtils = require('./utils/fs');
 var imageUtils = require('./utils/image');
@@ -14,7 +16,7 @@ function runGruntTask(task) {
 
     // Execute the cmd and task combination
     var that = this;
-    exec('grunt ' + task, function (err, stdout, stderr) {
+    exec(shellQuote(['grunt', task]), function (err, stdout, stderr) {
       // If there was an error, show me the output
       if (err) {
         console.log(stdout, stderr);
@@ -37,9 +39,10 @@ function runGruntTask(task) {
 
 describe('A set of SVGs', function () {
   describe('processed into a single font and stylesheet', function () {
-    // TODO: Re-enable runGruntTask, it is disabled for faster dev
-    // runGruntTask('font:single');
+    // Run our grunt task
+    runGruntTask('font:single');
 
+    // Compare CSS
     fsUtils.loadActualLines(__dirname + '/actual_files/single/font.styl');
     fsUtils.loadExpectedLines(__dirname + '/expected_files/single/font.styl');
     it('produces a stylesheet', function () {
