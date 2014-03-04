@@ -194,7 +194,7 @@ describe('A set of SVGs', function () {
           fontFilepath: __dirname + '/actual_files/overrides/' + font.filename,
           fontFormat: font.format,
           fontNames: {
-            svg: 'essveegee.svg',
+            svg: 'essveegee.eot',
             woff: 'waffles.ttf'
           },
           screenshotPath: __dirname + '/actual_files/overrides/actual.' + font.filename + '.png'
@@ -204,7 +204,7 @@ describe('A set of SVGs', function () {
           fontFilepath: __dirname + '/expected_files/overrides/font.' + font.filename,
           fontFormat: font.format,
           fontNames: {
-            svg: 'essveegee.svg',
+            svg: 'essveegee.eot',
             woff: 'waffles.ttf'
           },
           screenshotPath: __dirname + '/actual_files/overrides/expected.' + font.filename + '.png'
