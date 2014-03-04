@@ -87,7 +87,7 @@ describe('A set of SVGs', function () {
     });
   });
 
-  describe.only('processed into multiple fonts and stylesheets', function () {
+  describe('processed into multiple fonts and stylesheets', function () {
     // Run our grunt task
     // TODO: Re-enable this
     // runGruntTask('font:multiple');
@@ -147,7 +147,7 @@ describe('A set of SVGs', function () {
     });
   });
 
-  describe('processed into overridden fonts and stylesheets', function () {
+  describe.only('processed into overridden fonts and stylesheets', function () {
     // Run our grunt task
     // TODO: Re-enable this
     // runGruntTask('font:overrides');
@@ -193,12 +193,20 @@ describe('A set of SVGs', function () {
           cssFilepath: __dirname + '/actual_files/overrides/styleee.json',
           fontFilepath: __dirname + '/actual_files/overrides/' + font.filename,
           fontFormat: font.format,
+          fontNames: {
+            eot: 'eof.svg',
+            woff: 'waffles.ttf'
+          },
           screenshotPath: __dirname + '/actual_files/overrides/actual.' + font.filename + '.png'
         });
         imageUtils.screenshotStylus({
           cssFilepath: __dirname + '/expected_files/overrides/styleee.json',
           fontFilepath: __dirname + '/expected_files/overrides/font.' + font.filename,
           fontFormat: font.format,
+          fontNames: {
+            eot: 'eof.svg',
+            woff: 'waffles.ttf'
+          },
           screenshotPath: __dirname + '/actual_files/overrides/expected.' + font.filename + '.png'
         });
         imageUtils.diff({

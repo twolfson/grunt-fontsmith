@@ -8,33 +8,34 @@ exports._compileCss = function (options) {
   var fontFormat = options.fontFormat;
   var fontNames = options.fontNames || {};
   if (fontFormat !== 'eot') {
-    var eotName = fontNames.eotName || 'font.eot';
+    var eotName = fontNames.eot || 'font.eot';
     css = css.replace(new RegExp('\\s+src:url\\("' + eotName + '"\\);', 'g'), '');
     css = css.replace(new RegExp('\\s*url\\("' + eotName + '\\?#iefix"\\) format\\("embedded-opentype"\\),\\s*', 'g'), '');
     expect(css).to.not.contain(eotName);
   }
   if (fontFormat !== 'woff') {
-    var woffName = fontNames.woffName || 'font.woff';
+    var woffName = fontNames.woff || 'font.woff';
     css = css.replace(new RegExp('\\s*url\\("' + woffName + '"\\) format\\("woff"\\),\\s*', 'g'), '');
     expect(css).to.not.contain(woffName);
   }
   if (fontFormat !== 'ttf') {
-    var ttfName = fontNames.ttfName || 'font.ttf';
+    var ttfName = fontNames.ttf || 'font.ttf';
     css = css.replace(new RegExp('\\s*url\\("' + ttfName + '"\\) format\\("truetype"\\),\\s*', 'g'), '');
     expect(css).to.not.contain(ttfName);
   }
   if (fontFormat !== 'svg') {
     // Guarantee no-commas for font formats
-    var svgName = fontNames.svgName || 'font.svg';
+    var svgName = fontNames.svg || 'font.svg';
     css = css.replace(',', ';');
     css = css.replace(new RegExp('\\s*url\\("' + svgName + '#icomoon"\\) format\\("svg"\\);\\s*', 'g'), '');
+    css = css.replace(/;\s*;/g, ';');
     expect(css).to.not.contain(svgName);
   }
 
   // Replace font path with our font path
   // var fontFilepath = __dirname + '/actual_files/single/font.svg';
   var fontFilepath = options.fontFilepath;
-  var fontname = fontNames[fontFormat + 'Name'] || 'font.' + fontFormat;
+  var fontname = fontNames[fontFormat] || 'font.' + fontFormat;
   // console.log(css);
   css = css.replace(fontname,  fontFilepath);
 
