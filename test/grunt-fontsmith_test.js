@@ -1,6 +1,7 @@
 var fs = require('fs');
 var expect = require('chai').expect;
 var stylus = require('stylus');
+var tmp = require('tmp');
 var fsUtils = require('./utils/fs');
 var imageUtils = require('./utils/image');
 
@@ -99,13 +100,33 @@ describe('A set of SVGs', function () {
       // expect(expectedCss).to.contain(expectedDir, 'Expected css has not replaced "' + fontname + '" with "' + expectedDir + filepath + '" successfully');
 
       // Render Stylus
+      var that = this;
       stylus.render(actualStyl + '\n' + charStyl, function (err, css) {
         // Save the CSS for later and callback
-        this.actualCss = css;
+        that.actualCss = css;
         done(err);
       });
     });
 // TODO: Screenshot actualCss and compare with iamge-diff
+    before(function saveCss (done) {
+      // Save css to a temporary file
+      var that = this;
+      tmp.tmpName({postfix: '.css'}, function (err, filepath) {
+        // If there was an error, callback
+        if (err) {
+          return done(err);
+        }
+
+        // Write out the file
+        fs.writeFileSync(filepath, that.actualCss, 'utf8');
+
+        // Save a reference to the file path
+        that.actualCssPath = filepath;
+
+        // Complete the test run
+        done();
+      });
+    });
       // terfall([
       //       stylus.render.bind(this, actualStyl + '\n' + charStyl),
       //       saveToFile,
