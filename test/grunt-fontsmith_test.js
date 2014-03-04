@@ -88,7 +88,7 @@ describe('A set of SVGs', function () {
 
       // Replace font path with our font path
       // TODO: Replace with `screenshotActualFont.path`
-      var actualDir = __dirname + '/actual_files';
+      var actualDir = __dirname + '/actual_files/';
       var filepath = 'single/font.svg';
       var fontname = 'font.' + fontFormat;
       var expectedCss = expectedCssObj[fontFormat];
@@ -130,6 +130,7 @@ describe('A set of SVGs', function () {
       });
     });
     before(function screenshotCss (done) {
+      console.log(this.actualCssPath);
       var cmd = shellQuote(['phantomjs', 'test_scripts/screenshot_font.js', this.actualCssPath, __dirname + '/actual_files/single/screenshot.png']);
       exec(cmd, {cwd: __dirname}, function (err, stdout, stderr) {
         // Fallback error with stderr
