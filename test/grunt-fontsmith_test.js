@@ -119,26 +119,29 @@ describe('A set of SVGs', function () {
 
     // Generate actual and expected screenshots
     // DEV: This is an anti-pattern since it destroys our stack trace
+    // DEV: PhantomJS does not support testing of `eot` so this only validates CSS
     ['svg', 'ttf', 'eot', 'woff'].forEach(function (fontFormat) {
-      imageUtils.screenshotStylus({
-        cssFilepath: __dirname + '/actual_files/multiple/font.styl',
-        fontFilepath: __dirname + '/actual_files/multiple/font.' + fontFormat,
-        fontFormat: fontFormat,
-        screenshotPath: __dirname + '/actual_files/multiple/actual.' + fontFormat + '.png'
-      });
-      imageUtils.screenshotStylus({
-        cssFilepath: __dirname + '/expected_files/multiple/font.styl',
-        fontFilepath: __dirname + '/expected_files/multiple/font.' + fontFormat,
-        fontFormat: fontFormat,
-        screenshotPath: __dirname + '/actual_files/multiple/expected.' + fontFormat + '.png'
-      });
-      imageUtils.diff({
-        actualImage: __dirname + '/actual_files/multiple/actual.' + fontFormat + '.png',
-        expectedImage: __dirname + '/actual_files/multiple/expected.' + fontFormat + '.png',
-        diffImage: __dirname + '/actual_files/multiple/diff.' + fontFormat + '.png'
-      });
-      it('produces a font', function () {
-        expect(this.imagesAreSame).to.equal(true);
+      describe('when rendering on a ' + fontFormat + ' supported browser', function () {
+        imageUtils.screenshotStylus({
+          cssFilepath: __dirname + '/actual_files/multiple/font.styl',
+          fontFilepath: __dirname + '/actual_files/multiple/font.' + fontFormat,
+          fontFormat: fontFormat,
+          screenshotPath: __dirname + '/actual_files/multiple/actual.' + fontFormat + '.png'
+        });
+        imageUtils.screenshotStylus({
+          cssFilepath: __dirname + '/expected_files/multiple/font.styl',
+          fontFilepath: __dirname + '/expected_files/multiple/font.' + fontFormat,
+          fontFormat: fontFormat,
+          screenshotPath: __dirname + '/actual_files/multiple/expected.' + fontFormat + '.png'
+        });
+        imageUtils.diff({
+          actualImage: __dirname + '/actual_files/multiple/actual.' + fontFormat + '.png',
+          expectedImage: __dirname + '/actual_files/multiple/expected.' + fontFormat + '.png',
+          diffImage: __dirname + '/actual_files/multiple/diff.' + fontFormat + '.png'
+        });
+        it('render a(n) ' + fontFormat + ' font', function () {
+          expect(this.imagesAreSame).to.equal(true);
+        });
       });
     });
   });
