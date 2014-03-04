@@ -87,8 +87,9 @@ describe('A set of SVGs', function () {
     });
   });
 
-  describe.only('processed into multiple fonts and stylesheets', function () {
+  describe('processed into multiple fonts and stylesheets', function () {
     // Run our grunt task
+    // TODO: Re-enable this
     // runGruntTask('font:multiple');
 
     // Compare Stylus and JSON
@@ -146,7 +147,65 @@ describe('A set of SVGs', function () {
     });
   });
 
-  describe('processed into overridden fonts and stylesheets', function () {
+  describe.only('processed into overridden fonts and stylesheets', function () {
+    // Run our grunt task
+    // TODO: Re-enable this
+    // runGruntTask('font:overrides');
+
+    // Compare Stylus and JSON
+    fsUtils.loadActualLines(__dirname + '/actual_files/overrides/jason.less');
+    fsUtils.loadExpectedLines(__dirname + '/expected_files/overrides/jason.less');
+    it('produces JSON under a .less file', function () {
+      // Determine how many lines are different
+      var actualLines = this.actualLines;
+      var differentLines = this.expectedLines.filter(function (line) {
+        return actualLines.indexOf(line) === -1;
+      });
+
+      // Assert that only the character lines are different
+      expect(differentLines.length).to.be.at.most(3);
+    });
+    fsUtils.loadActualLines(__dirname + '/actual_files/overrides/styleee.json');
+    fsUtils.loadExpectedLines(__dirname + '/expected_files/overrides/styleee.json');
+    it('produces a Stylus stylesheet under a .json file', function () {
+      // Determine how many lines are different
+      var actualLines = this.actualLines;
+      var differentLines = this.expectedLines.filter(function (line) {
+        return actualLines.indexOf(line) === -1;
+      });
+
+      // Assert that only the character lines are different
+      expect(differentLines.length).to.be.at.most(3);
+    });
+
+    // // Generate actual and expected screenshots
+    // // DEV: This is an anti-pattern since it destroys our stack trace
+    // // DEV: PhantomJS does not support testing of `eot` so this only validates CSS
+    // ['svg', 'ttf', 'eot', 'woff'].forEach(function (fontFormat) {
+    //   describe('when rendering on a ' + fontFormat + ' supported browser', function () {
+    //     imageUtils.screenshotStylus({
+    //       cssFilepath: __dirname + '/actual_files/multiple/font.styl',
+    //       fontFilepath: __dirname + '/actual_files/multiple/font.' + fontFormat,
+    //       fontFormat: fontFormat,
+    //       screenshotPath: __dirname + '/actual_files/multiple/actual.' + fontFormat + '.png'
+    //     });
+    //     imageUtils.screenshotStylus({
+    //       cssFilepath: __dirname + '/expected_files/multiple/font.styl',
+    //       fontFilepath: __dirname + '/expected_files/multiple/font.' + fontFormat,
+    //       fontFormat: fontFormat,
+    //       screenshotPath: __dirname + '/actual_files/multiple/expected.' + fontFormat + '.png'
+    //     });
+    //     imageUtils.diff({
+    //       actualImage: __dirname + '/actual_files/multiple/actual.' + fontFormat + '.png',
+    //       expectedImage: __dirname + '/actual_files/multiple/expected.' + fontFormat + '.png',
+    //       diffImage: __dirname + '/actual_files/multiple/diff.' + fontFormat + '.png'
+    //     });
+    //     it('render a(n) ' + fontFormat + ' font', function () {
+    //       expect(this.imagesAreSame).to.equal(true);
+    //     });
+    //   });
+    // });
+
     it.skip('produces stylesheets with proper formats', function () {
 
     });
