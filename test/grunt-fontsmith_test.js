@@ -87,7 +87,7 @@ describe('A set of SVGs', function () {
     });
   });
 
-  describe('processed into multiple fonts and stylesheets', function () {
+  describe.only('processed into multiple fonts and stylesheets', function () {
     // Run our grunt task
     // TODO: Re-enable this
     // runGruntTask('font:multiple');
@@ -147,7 +147,7 @@ describe('A set of SVGs', function () {
     });
   });
 
-  describe.only('processed into overridden fonts and stylesheets', function () {
+  describe('processed into overridden fonts and stylesheets', function () {
     // Run our grunt task
     // TODO: Re-enable this
     // runGruntTask('font:overrides');
