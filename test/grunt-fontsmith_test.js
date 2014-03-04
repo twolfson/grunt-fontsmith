@@ -62,6 +62,7 @@ describe('A set of SVGs', function () {
       fontFilepath: __dirname + '/actual_files/single/font.svg',
       format: 'svg'
     });
+    // TODO: This screenshot is a little bit too magical by using `this.css` =(
     imageUtils.screenshotCss({
       screenshotPath: __dirname + '/actual_files/single/actual.png'
     });
@@ -73,8 +74,13 @@ describe('A set of SVGs', function () {
     imageUtils.screenshotCss({
       screenshotPath: __dirname + '/actual_files/single/expected.png'
     });
-    it.skip('produces a font', function () {
-      assert.strictEqual(fonts[0], fonts[1]);
+    imageUtils.diff({
+      actualImage: __dirname + '/actual_files/single/actual.png',
+      expectedImage: __dirname + '/actual_files/single/expected.png',
+      diffImage: __dirname + '/actual_files/single/diff.png'
+    });
+    it('produces a font', function () {
+      expect(this.imagesAreSame).to.equal(true);
     });
   });
 

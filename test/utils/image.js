@@ -1,7 +1,8 @@
 var fs = require('fs');
 var exec = require('child_process').exec;
-var tmp = require('tmp');
+var imageDiff = require('image-diff');
 var shellQuote = require('shell-quote').quote;
+var tmp = require('tmp');
 
 exports.screenshotCss = function (options) {
   var cssPath;
@@ -36,6 +37,16 @@ exports.screenshotCss = function (options) {
       }
 
       // Callback with our error and font
+      done(err);
+    });
+  });
+};
+
+exports.diff = function (options) {
+  before(function (done) {
+    var that = this;
+    imageDiff(options, function handleDiff (err, imagesAreSame) {
+      that.imagesAreSame = imagesAreSame;
       done(err);
     });
   });
