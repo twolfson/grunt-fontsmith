@@ -1,8 +1,5 @@
 var fs = require('fs');
-var exec = require('child_process').exec;
 var expect = require('chai').expect;
-var shellQuote = require('shell-quote').quote;
-var tmp = require('tmp');
 var cssUtils = require('./utils/css');
 var fsUtils = require('./utils/fs');
 var imageUtils = require('./utils/image');
@@ -50,49 +47,11 @@ describe('A set of SVGs', function () {
       fontFilepath: __dirname + '/actual_files/single/font.svg',
       format: 'svg'
     });
-    // imageUtils.screenshotActualFont({
-    //   path: 'single/font.svg',
-    //   format: 'svg'
-    // });
-
-// TODO: Screenshot actualCss and compare with iamge-diff
-    before(function saveCss (done) {
-      // Save css to a temporary file
-      var that = this;
-      tmp.tmpName({postfix: '.css'}, function (err, filepath) {
-        // If there was an error, callback
-        if (err) {
-          return done(err);
-        }
-
-        // Write out the file
-        fs.writeFileSync(filepath, that.css, 'utf8');
-
-        // Save a reference to the file path
-        that.actualCssPath = filepath;
-
-        // Complete the test run
-        done();
-      });
+    imageUtils.screenshotCss({
+      screenshotPath: __dirname + '/actual_files/single/screenshot.png'
     });
-    before(function screenshotCss (done) {
-      console.log(this.actualCssPath);
-      var cmd = shellQuote(['phantomjs', 'test_scripts/screenshot_font.js', this.actualCssPath, __dirname + '/actual_files/single/screenshot.png']);
-      exec(cmd, {cwd: __dirname}, function (err, stdout, stderr) {
-        // Fallback error with stderr
-        if (!err && stderr) {
-          err = new Error(stderr);
-        }
 
-        // If there was stdout, log it
-        if (stdout) {
-          console.log('SCREENSHOT FONT STDOUT: ', stdout);
-        }
-
-        // Callback with our error and font
-        done(err);
-      });
-    });
+// TODO: Screenshot actualCss and compare with image-diff
 
     it('produces a stylesheet', function () {
       // Determine how many lines are different
