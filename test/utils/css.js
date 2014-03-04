@@ -15,7 +15,6 @@ exports._compileCss = function (options) {
   }
   if (fontFormat !== 'woff') {
     var woffName = fontNames.woffName || 'font.woff';
-    console.log(woffName);
     css = css.replace(new RegExp('\\s*url\\("' + woffName + '"\\) format\\("woff"\\),\\s*', 'g'), '');
     expect(css).to.not.contain(woffName);
   }

@@ -121,8 +121,7 @@ describe('A set of SVGs', function () {
     // Generate actual and expected screenshots
     // DEV: This is an anti-pattern since it destroys our stack trace
     // DEV: PhantomJS does not support testing of `eot` so this only validates CSS
-    ['ttf'].forEach(function (fontFormat) {
-    // ['svg', 'ttf', 'eot', 'woff'].forEach(function (fontFormat) {
+    ['svg', 'ttf', 'eot', 'woff'].forEach(function (fontFormat) {
       describe('when rendering on a ' + fontFormat + ' supported browser', function () {
         imageUtils.screenshotStylus({
           cssFilepath: __dirname + '/actual_files/multiple/font.styl',
