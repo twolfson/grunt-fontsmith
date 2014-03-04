@@ -201,7 +201,7 @@ describe('A set of SVGs', function () {
         });
         imageUtils.screenshotStylus({
           cssFilepath: __dirname + '/expected_files/overrides/styleee.json',
-          fontFilepath: __dirname + '/expected_files/overrides/font.' + font.filename,
+          fontFilepath: __dirname + '/expected_files/overrides/' + font.filename,
           fontFormat: font.format,
           fontNames: {
             svg: 'essveegee.eot',
