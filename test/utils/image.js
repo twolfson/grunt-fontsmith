@@ -3,6 +3,13 @@ var exec = require('child_process').exec;
 var imageDiff = require('image-diff');
 var shellQuote = require('shell-quote').quote;
 var tmp = require('tmp');
+var cssUtils = require('./css');
+
+exports.screenshotStylus = function (options) {
+  // TODO: This screenshot is a little bit too magical by using `this.css` =(
+  cssUtils.compileStylus(options);
+  exports.screenshotCss(options);
+};
 
 exports.screenshotCss = function (options) {
   var cssPath;

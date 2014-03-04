@@ -40,7 +40,6 @@ describe('A set of SVGs', function () {
     // TODO: Re-enable runGruntTask, it is disabled for faster dev
     // runGruntTask('font:single');
 
-
     fsUtils.loadActualLines(__dirname + '/actual_files/single/font.styl');
     fsUtils.loadExpectedLines(__dirname + '/expected_files/single/font.styl');
     it('produces a stylesheet', function () {
@@ -57,21 +56,16 @@ describe('A set of SVGs', function () {
     });
 
     // Generate actual and expected screenshots
-    cssUtils.compileStylus({
+    imageUtils.screenshotStylus({
       cssFilepath: __dirname + '/actual_files/single/font.styl',
       fontFilepath: __dirname + '/actual_files/single/font.svg',
-      fontFormat: 'svg'
-    });
-    // TODO: This screenshot is a little bit too magical by using `this.css` =(
-    imageUtils.screenshotCss({
+      fontFormat: 'svg',
       screenshotPath: __dirname + '/actual_files/single/actual.png'
     });
-    cssUtils.compileStylus({
+    imageUtils.screenshotStylus({
       cssFilepath: __dirname + '/expected_files/single/font.styl',
       fontFilepath: __dirname + '/expected_files/single/font.svg',
-      fontFormat: 'svg'
-    });
-    imageUtils.screenshotCss({
+      fontFormat: 'svg',
       screenshotPath: __dirname + '/actual_files/single/expected.png'
     });
     imageUtils.diff({
