@@ -6,30 +6,33 @@ exports._compileCss = function (options) {
   // Strip out fonts that are not going to be tested
   var css = fs.readFileSync(options.cssFilepath, 'utf8');
   var fontFormat = options.fontFormat;
+  var fontNames = options.fontNames || {};
   if (fontFormat !== 'eot') {
-    var eotName = options.eotName || 'font.eot';
-    css = css.replace(new RegExp('\\s+src:url\\("' + eotName + '"\\);'), '');
-    css = css.replace(new RegExp('\\s*url\\("' + eotName + '\\?#iefix"\\) format\\("embedded-opentype"\\),\\s*'), '');
+    var eotName = fontNames.eotName || 'font.eot';
+    css = css.replace(new RegExp('\\s+src:url\\("' + eotName + '"\\);', 'g'), '');
+    css = css.replace(new RegExp('\\s*url\\("' + eotName + '\\?#iefix"\\) format\\("embedded-opentype"\\),\\s*', 'g'), '');
   }
   if (fontFormat !== 'woff') {
-    var woffName = options.woffName || 'font.woff';
-    css = css.replace(new RegExp('\\s*url\\(' + woffName + '"\\) format\\("woff"\\),\\s*'), '');
+    var woffName = fontNames.woffName || 'font.woff';
+    console.log(woffName);
+    css = css.replace(new RegExp('\\s*url\\(' + woffName + '"\\) format\\("woff"\\),\\s*', 'g'), '');
   }
   if (fontFormat !== 'ttf') {
-    var ttfName = options.ttfName || 'font.ttf';
-    css = css.replace(new RegExp('\\s*url\\("' + ttfName + '"\\) format\\("truetype"\\),\\s*'), '');
+    var ttfName = fontNames.ttfName || 'font.ttf';
+    css = css.replace(new RegExp('\\s*url\\("' + ttfName + '"\\) format\\("truetype"\\),\\s*', 'g'), '');
   }
   if (fontFormat !== 'svg') {
     // Guarantee no-commas for font formats
-    var svgName = options.svgName || 'font.svg';
+    var svgName = fontNames.svgName || 'font.svg';
     css = css.replace(',', ';');
-    css = css.replace(new RegExp('\\s*url\\("' + svgName + '#icomoon"\\) format\\("svg"\\);\\s*/'), '');
+    css = css.replace(new RegExp('\\s*url\\("' + svgName + '#icomoon"\\) format\\("svg"\\);\\s*/', 'g'), '');
   }
 
   // Replace font path with our font path
   // var fontFilepath = __dirname + '/actual_files/single/font.svg';
   var fontFilepath = options.fontFilepath;
-  var fontname = options[fontFormat + 'Name'] || 'font.' + fontFormat;
+  var fontname = fontNames[fontFormat + 'Name'] || 'font.' + fontFormat;
+  // console.log(css);
   css = css.replace(fontname,  fontFilepath);
 
   // Assert our replacements were successful
