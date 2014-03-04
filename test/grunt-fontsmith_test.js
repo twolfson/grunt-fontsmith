@@ -185,8 +185,8 @@ describe('A set of SVGs', function () {
       filename: 'waffles.ttf',
       format: 'woff'
     }, {
-      filename: 'eof.svg',
-      format: 'eot'
+      filename: 'essveegee.eot',
+      format: 'svg'
     }].forEach(function (font) {
       describe('when rendering on a ' + font.format + ' supported browser', function () {
         imageUtils.screenshotStylus({
@@ -194,7 +194,7 @@ describe('A set of SVGs', function () {
           fontFilepath: __dirname + '/actual_files/overrides/' + font.filename,
           fontFormat: font.format,
           fontNames: {
-            eot: 'eof.svg',
+            svg: 'essveegee.svg',
             woff: 'waffles.ttf'
           },
           screenshotPath: __dirname + '/actual_files/overrides/actual.' + font.filename + '.png'
@@ -204,7 +204,7 @@ describe('A set of SVGs', function () {
           fontFilepath: __dirname + '/expected_files/overrides/font.' + font.filename,
           fontFormat: font.format,
           fontNames: {
-            eot: 'eof.svg',
+            svg: 'essveegee.svg',
             woff: 'waffles.ttf'
           },
           screenshotPath: __dirname + '/actual_files/overrides/expected.' + font.filename + '.png'
