@@ -39,20 +39,10 @@ describe('A set of SVGs', function () {
   describe('processed into a single font and stylesheet', function () {
     // TODO: Re-enable runGruntTask, it is disabled for faster dev
     // runGruntTask('font:single');
+
+
     fsUtils.loadActualLines(__dirname + '/actual_files/single/font.styl');
     fsUtils.loadExpectedLines(__dirname + '/expected_files/single/font.styl');
-
-    cssUtils.compileStylus({
-      cssFilepath: __dirname + '/actual_files/single/font.styl',
-      fontFilepath: __dirname + '/actual_files/single/font.svg',
-      format: 'svg'
-    });
-    imageUtils.screenshotCss({
-      screenshotPath: __dirname + '/actual_files/single/screenshot.png'
-    });
-
-// TODO: Screenshot actualCss and compare with image-diff
-
     it('produces a stylesheet', function () {
       // Determine how many lines are different
       var actualLines = this.actualLines;
@@ -64,6 +54,24 @@ describe('A set of SVGs', function () {
       // TODO: If we ever have more than 3 sprites, update
       // the tests to be explicit about how many characters are being used
       expect(differentLines.length).to.be.at.most(3);
+    });
+
+    // Generate actual and expected screenshots
+    cssUtils.compileStylus({
+      cssFilepath: __dirname + '/actual_files/single/font.styl',
+      fontFilepath: __dirname + '/actual_files/single/font.svg',
+      format: 'svg'
+    });
+    imageUtils.screenshotCss({
+      screenshotPath: __dirname + '/actual_files/single/actual.png'
+    });
+    cssUtils.compileStylus({
+      cssFilepath: __dirname + '/expected_files/single/font.styl',
+      fontFilepath: __dirname + '/expected_files/single/font.svg',
+      format: 'svg'
+    });
+    imageUtils.screenshotCss({
+      screenshotPath: __dirname + '/actual_files/single/expected.png'
     });
     it.skip('produces a font', function () {
       assert.strictEqual(fonts[0], fonts[1]);
