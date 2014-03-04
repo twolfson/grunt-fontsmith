@@ -1,5 +1,7 @@
 var fs = require('fs');
+var exec = require('child_process').exec;
 var expect = require('chai').expect;
+var shellQuote = require('shell-quote').quote;
 var stylus = require('stylus');
 var tmp = require('tmp');
 var fsUtils = require('./utils/fs');
@@ -127,32 +129,23 @@ describe('A set of SVGs', function () {
         done();
       });
     });
-      // terfall([
-      //       stylus.render.bind(this, actualStyl + '\n' + charStyl),
-      //       saveToFile,
-      //       screenshotFont.bind(this, {context: 'actual'})
-      //     ], cb);
-      //       // Screenshot the font in use
-      // console.log(cssPath);
+    before(function screenshotCss (done) {
+      var cmd = shellQuote(['phantomjs', 'test_scripts/screenshot_font.js', this.actualCssPath, __dirname + '/actual_files/single/screenshot.png']);
+      exec(cmd, {cwd: __dirname}, function (err, stdout, stderr) {
+        // Fallback error with stderr
+        if (!err && stderr) {
+          err = new Error(stderr);
+        }
 
-      // exec('phantomjs test_scripts/screenshot_font.js ' + cssPath, function (err, stdout, stderr) {
-      //   // Fallback error with stderr
-      //   if (!err && stderr) {
-      //     err = new Error(stderr);
-      //   }
+        // If there was stdout, log it
+        if (stdout) {
+          console.log('SCREENSHOT FONT STDOUT: ', stdout);
+        }
 
-      //   // If there was stdout, log it
-      //   if (stdout) {
-      //     console.log('SCREENSHOT FONT STDOUT: ', stdout);
-      //   }
-
-      //   // Always create screenshots for debugging
-      //   fs.writeFileSync('tmp.' + options.context + '.' + fontFormat + '.png', stdout, 'base64');
-
-      //   // Callback with our error and font
-      //   cb(err, stdout);
-      // });
-
+        // Callback with our error and font
+        done(err);
+      });
+    });
 
     it('produces a stylesheet', function () {
       // Determine how many lines are different
