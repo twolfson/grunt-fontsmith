@@ -28,8 +28,8 @@ This requires installing [phantomjs][phantomjs] and having it accessible from yo
 grunt.initConfig({
   font: {
     all: {
-      // SVG files to reed in
-      src: ['public/images/icons/*.png'],
+      // SVG files to read in
+      src: ['public/images/icons/*.svg'],
 
       // Location to output CSS variables
       destCss: 'public/css/icons.styl',
