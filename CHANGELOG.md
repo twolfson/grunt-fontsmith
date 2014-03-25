@@ -1,4 +1,6 @@
 # grunt-fontsmith changelog
+0.8.1 - Corrected README typos. Fixes #14
+
 0.8.0 - Upgraded to `fontsmith@0.5.0` to fail faster for empty arrays of icons
 
 0.7.0 - Upgraded to `fontsmith@0.4.0` to pick up `icomoon-phantomjs@0.4.0` debug screenshot and failed upload messaging
