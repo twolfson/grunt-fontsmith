@@ -1,4 +1,6 @@
 # grunt-fontsmith changelog
+0.9.1 - Fixed typo in README via @nerik in #16
+
 0.9.0 - Upgraded to `fontsmith@0.6.0` to fix handling paths that contain spaces. Fixes #15
 
 0.8.1 - Corrected README typos. Fixes #14
