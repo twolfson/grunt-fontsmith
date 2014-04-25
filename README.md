@@ -35,7 +35,7 @@ grunt.initConfig({
       destCss: 'public/css/icons.styl',
 
       // Location to output fonts (expanded via brace expansion)
-      destFonts: 'public/fonts/icons.{svg,woff,eot,ttf}'
+      destFonts: 'public/fonts/icons.{svg,woff,eot,ttf}',
 
       // Multiple CSS outputs supported (generated .styl and .json files)
       destCss: 'actual_files/font.{styl,json}',
