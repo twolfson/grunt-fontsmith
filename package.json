@@ -29,11 +29,11 @@
     "test": "mocha"
   },
   "dependencies": {
-    "fontsmith": "~0.6.0",
-    "mustache": "~0.7.2",
-    "url2": "*",
+    "fontsmith": "~0.7.0",
     "json2fontcss": "~0.2.0",
-    "shell-quote": "~1.4.1"
+    "mustache": "~0.7.2",
+    "shell-quote": "~1.4.1",
+    "url2": "*"
   },
   "devDependencies": {
     "grunt": "~0.4.0",
