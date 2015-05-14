@@ -1,4 +1,6 @@
 # grunt-fontsmith changelog
+0.11.1 - Added deprecation notice
+
 0.11.0 - Upgraded to `fontsmith@0.8.0` to pick up `params.exportOptions` support
 
 0.10.0 - Upgraded to `fontsmith@0.7.0` to pick up `node@0.12` fix. Fixes #28
