@@ -69,7 +69,8 @@ module.exports = function (grunt) {
     var destFontFormats = Object.getOwnPropertyNames(destFonts),
         params = {
           'src': srcFiles,
-          'fonts': destFontFormats
+          'fonts': destFontFormats,
+          'exportOptions': data.exportOptions
         },
         done = this.async();
 
