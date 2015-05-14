@@ -29,7 +29,7 @@
     "test": "mocha"
   },
   "dependencies": {
-    "fontsmith": "~0.7.0",
+    "fontsmith": "~0.8.0",
     "json2fontcss": "~0.2.0",
     "mustache": "~0.7.2",
     "shell-quote": "~1.4.1",
